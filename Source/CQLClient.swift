@@ -55,7 +55,7 @@ public class LCCQLClient {
     static let endpoint = "cloudQuery"
 
     /// The dispatch queue for asynchronous CQL execution task.
-    static let backgroundQueue = dispatch_queue_create("LeanCloud.CQLClient", DISPATCH_QUEUE_CONCURRENT)
+    static let backgroundQueue = DispatchQueue(label: "LeanCloud.CQLClient", attributes: .concurrent)
 
     /**
      Asynchronize task into background queue.
@@ -63,7 +63,7 @@ public class LCCQLClient {
      - parameter task:       The task to be performed.
      - parameter completion: The completion closure to be called on main thread after task finished.
      */
-    static func asynchronize<Result>(task: () -> Result, completion: (Result) -> Void) {
+    static func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
         Utility.asynchronize(task, backgroundQueue, completion)
     }
 
@@ -75,7 +75,7 @@ public class LCCQLClient {
 
      - returns: The parameters for CQL execution.
      */
-    static func parameters(CQL: String, parameters: [AnyObject]) -> [String: AnyObject] {
+    static func parameters(_ CQL: String, parameters: [AnyObject]) -> [String: AnyObject] {
         var result = ["cql": CQL]
 
         if !parameters.isEmpty {
@@ -93,7 +93,7 @@ public class LCCQLClient {
 
      - returns: The result of CQL statement.
      */
-    public static func execute(CQL: String, parameters: [AnyObject] = []) -> LCCQLResult {
+    public static func execute(_ CQL: String, parameters: [AnyObject] = []) -> LCCQLResult {
         let parameters = self.parameters(CQL, parameters: parameters)
         let response   = RESTClient.request(.GET, endpoint, parameters: parameters)
 
@@ -107,7 +107,7 @@ public class LCCQLClient {
      - parameter parameters: The parameters for placeholders in CQL statement.
      - parameter completion: The completion callback closure.
      */
-    public static func execute(CQL: String, parameters: [AnyObject] = [], completion: (result: LCCQLResult) -> Void) {
+    public static func execute(_ CQL: String, parameters: [AnyObject] = [], completion: (result: LCCQLResult) -> Void) {
         asynchronize({ execute(CQL, parameters: parameters) }) { result in
             completion(result: result)
         }

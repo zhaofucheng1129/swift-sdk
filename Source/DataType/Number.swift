@@ -13,7 +13,7 @@ import Foundation
 
  It is a wrapper of `Swift.Double` type, used to store a number value.
  */
-public final class LCNumber: NSObject, LCType, LCTypeExtension, FloatLiteralConvertible, IntegerLiteralConvertible {
+public final class LCNumber: NSObject, LCType, LCTypeExtension, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
     public private(set) var value: Double = 0
 
     public override init() {
@@ -34,18 +34,18 @@ public final class LCNumber: NSObject, LCType, LCTypeExtension, FloatLiteralConv
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = aDecoder.decodeDoubleForKey("value")
+        value = aDecoder.decodeDouble(forKey: "value")
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeDouble(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return LCNumber(value)
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         if object === self {
             return true
         } else if let object = object as? LCNumber {
@@ -71,11 +71,11 @@ public final class LCNumber: NSObject, LCType, LCTypeExtension, FloatLiteralConv
         return LCNumber()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
+    func add(_ other: LCType) throws -> LCType {
         let result = LCNumber(value)
 
         result.addInPlace((other as! LCNumber).value)
@@ -83,15 +83,15 @@ public final class LCNumber: NSObject, LCType, LCTypeExtension, FloatLiteralConv
         return result
     }
 
-    func addInPlace(amount: Double) {
+    func addInPlace(_ amount: Double) {
         value += amount
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }

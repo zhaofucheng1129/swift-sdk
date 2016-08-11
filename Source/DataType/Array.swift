@@ -13,7 +13,7 @@ import Foundation
 
  It is a wrapper of `Swift.Array` type, used to store a list of objects.
  */
-public final class LCArray: NSObject, LCType, LCTypeExtension, SequenceType, ArrayLiteralConvertible {
+public final class LCArray: NSObject, LCType, LCTypeExtension, Sequence, ExpressibleByArrayLiteral {
     public typealias Element = LCType
 
     public private(set) var value: [Element] = []
@@ -39,18 +39,18 @@ public final class LCArray: NSObject, LCType, LCTypeExtension, SequenceType, Arr
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = (aDecoder.decodeObjectForKey("value") as? [Element]) ?? []
+        value = (aDecoder.decodeObject(forKey: "value") as? [Element]) ?? []
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return LCArray(value)
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         if object === self {
             return true
         } else if let object = object as? LCArray {
@@ -63,8 +63,8 @@ public final class LCArray: NSObject, LCType, LCTypeExtension, SequenceType, Arr
         }
     }
 
-    public func generate() -> IndexingGenerator<[Element]> {
-        return value.generate()
+    public func makeIterator() -> IndexingIterator<[Element]> {
+        return value.makeIterator()
     }
 
     public subscript(index: Int) -> LCType? {
@@ -87,15 +87,15 @@ public final class LCArray: NSObject, LCType, LCTypeExtension, SequenceType, Arr
         return self.init([])
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         forEach { element in body(child: element) }
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
         let result   = LCArray(value)
         let elements = (other as! LCArray).value
 
@@ -104,11 +104,11 @@ public final class LCArray: NSObject, LCType, LCTypeExtension, SequenceType, Arr
         return result
     }
 
-    func concatenateInPlace(elements: [Element], unique: Bool) {
+    func concatenateInPlace(_ elements: [Element], unique: Bool) {
         value = unique ? (value +~ elements) : (value + elements)
     }
 
-    func differ(other: LCType) throws -> LCType {
+    func differ(_ other: LCType) throws -> LCType {
         let result   = LCArray(value)
         let elements = (other as! LCArray).value
 
@@ -117,7 +117,7 @@ public final class LCArray: NSObject, LCType, LCTypeExtension, SequenceType, Arr
         return result
     }
 
-    func differInPlace(elements: [Element]) {
+    func differInPlace(_ elements: [Element]) {
         value = value - elements
     }
 }

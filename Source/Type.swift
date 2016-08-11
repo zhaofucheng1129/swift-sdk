@@ -52,7 +52,7 @@ protocol LCTypeExtension {
 
      - parameter body: The iterator closure.
      */
-    func forEachChild(body: (child: LCType) -> Void)
+    func forEachChild(_ body: @noescape (child: LCType) -> Void)
 
     // MARK: Arithmetic
 
@@ -63,7 +63,7 @@ protocol LCTypeExtension {
 
      - returns: The sum of addition.
      */
-    func add(other: LCType) throws -> LCType
+    func add(_ other: LCType) throws -> LCType
 
     /**
      Concatenate an object with unique option.
@@ -76,7 +76,7 @@ protocol LCTypeExtension {
 
      - returns: The concatenation result.
      */
-    func concatenate(other: LCType, unique: Bool) throws -> LCType
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType
 
     /**
      Calculate difference with other.
@@ -85,5 +85,5 @@ protocol LCTypeExtension {
 
      - returns: The difference result.
      */
-    func differ(other: LCType) throws -> LCType
+    func differ(_ other: LCType) throws -> LCType
 }

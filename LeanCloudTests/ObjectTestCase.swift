@@ -37,8 +37,8 @@ class ObjectTestCase: BaseTestCase {
         object.booleanField  = true
         object.stringField   = "123456"
         object.geoPointField = LCGeoPoint(latitude: 45, longitude: -45)
-        object.dataField     = LCData(NSData())
-        object.dateField     = LCDate(NSDate(timeIntervalSince1970: 1))
+        object.dataField     = LCData(Data())
+        object.dateField     = LCDate(Date(timeIntervalSince1970: 1))
 
         XCTAssertTrue(object.save().isSuccess)
         XCTAssertNotNil(object.objectId)
@@ -161,7 +161,7 @@ class ObjectTestCase: BaseTestCase {
 
         let result = object.fetch()
         XCTAssertTrue(result.isFailure)
-        XCTAssertEqual(LCError.InternalErrorCode(rawValue: result.error!.code), .NotFound)
+        XCTAssertEqual(LCError.InternalErrorCode(rawValue: result.error!.code), .notFound)
     }
 
     func testFetchNotFound() {
@@ -169,7 +169,7 @@ class ObjectTestCase: BaseTestCase {
 
         let result = object.fetch()
         XCTAssertTrue(result.isFailure)
-        XCTAssertEqual(LCError.ServerErrorCode(rawValue: result.error!.code), .ObjectNotFound)
+        XCTAssertEqual(LCError.ServerErrorCode(rawValue: result.error!.code), .objectNotFound)
     }
 
     func testFetchObjects() {
@@ -178,8 +178,8 @@ class ObjectTestCase: BaseTestCase {
         let notFound = TestObject(objectId: "000")
         let newborn  = TestObject()
 
-        XCTAssertEqual(LCError.InternalErrorCode(rawValue: LCObject.fetch([object, newborn]).error!.code), .NotFound)
-        XCTAssertEqual(LCError.ServerErrorCode(rawValue: LCObject.fetch([object, notFound]).error!.code), .ObjectNotFound)
+        XCTAssertEqual(LCError.InternalErrorCode(rawValue: LCObject.fetch([object, newborn]).error!.code), .notFound)
+        XCTAssertEqual(LCError.ServerErrorCode(rawValue: LCObject.fetch([object, notFound]).error!.code), .objectNotFound)
         XCTAssertTrue(LCObject.fetch([object, child]).isSuccess)
     }
 
@@ -212,20 +212,20 @@ class ObjectTestCase: BaseTestCase {
     func testKVO() {
         let object = TestObject()
 
-        object.addObserver(self, forKeyPath: "stringField", options: .New, context: nil)
+        object.addObserver(self, forKeyPath: "stringField", options: .new, context: nil)
         object.stringField = "yet another value"
         object.removeObserver(self, forKeyPath: "stringField")
 
         XCTAssertTrue(observed)
     }
 
-    override func observeValueForKeyPath(
-        keyPath: String?,
-        ofObject object: AnyObject?,
-        change: [String : AnyObject]?,
-        context: UnsafeMutablePointer<Void>)
+    override func observeValue(
+        forKeyPath keyPath: String?,
+        of object: AnyObject?,
+        change: [NSKeyValueChangeKey : AnyObject]?,
+        context: UnsafeMutablePointer<Void>?)
     {
-        if let newValue = change?["new"] as? LCString {
+        if let newValue = change?["new" as NSKeyValueChangeKey] as? LCString {
             if newValue == LCString("yet another value") {
                 observed = true
             }
@@ -235,7 +235,7 @@ class ObjectTestCase: BaseTestCase {
     func testInvalidType() {
         let object = TestObject()
 
-        XCTAssertThrowsException({
+        xctAssertThrowsException({
             object.set("stringField", value: "123" as LCString)
             object.increase("stringField", by: 1)
         })

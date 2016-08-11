@@ -14,21 +14,21 @@ import Foundation
  This type can be used to represent a byte buffers.
  */
 public final class LCData: NSObject, LCType, LCTypeExtension {
-    public private(set) var value: NSData = NSData()
+    public private(set) var value: Data = Data()
 
     var base64EncodedString: String {
-        return value.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        return value.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
 
-    static func dataFromString(string: String) -> NSData? {
-        return NSData(base64EncodedString: string, options: NSDataBase64DecodingOptions(rawValue: 0))
+    static func dataFromString(_ string: String) -> Data? {
+        return Data(base64Encoded: string, options: NSData.Base64DecodingOptions(rawValue: 0))
     }
 
     public override init() {
         super.init()
     }
 
-    public convenience init(_ data: NSData) {
+    public convenience init(_ data: Data) {
         self.init()
         value = data
     }
@@ -62,22 +62,22 @@ public final class LCData: NSObject, LCType, LCTypeExtension {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = (aDecoder.decodeObjectForKey("value") as? NSData) ?? NSData()
+        value = (aDecoder.decodeObject(forKey: "value") as? Data) ?? Data()
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
-        return LCData(value.copy() as! NSData)
+    public func copy(with zone: NSZone?) -> AnyObject {
+        return LCData((value as NSData).copy() as! Data)
     }
 
-    public override func isEqual(another: AnyObject?) -> Bool {
+    public override func isEqual(_ another: AnyObject?) -> Bool {
         if another === self {
             return true
         } else if let another = another as? LCData {
-            return another.value.isEqualToData(value)
+            return (another.value as NSData).isEqual(to: value)
         } else {
             return false
         }
@@ -102,19 +102,19 @@ public final class LCData: NSObject, LCType, LCTypeExtension {
         return self.init()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }

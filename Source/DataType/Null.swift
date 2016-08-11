@@ -24,15 +24,15 @@ public class LCNull: NSObject, LCType, LCTypeExtension {
         /* Nothing to decode. */
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         /* Nothing to encode. */
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return LCNull()
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         return object === self || object is LCNull
     }
 
@@ -52,19 +52,19 @@ public class LCNull: NSObject, LCType, LCTypeExtension {
         return LCNull()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }

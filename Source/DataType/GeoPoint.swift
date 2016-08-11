@@ -65,20 +65,20 @@ public final class LCGeoPoint: NSObject, LCType, LCTypeExtension {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        latitude  = aDecoder.decodeDoubleForKey("latitude")
-        longitude = aDecoder.decodeDoubleForKey("longitude")
+        latitude  = aDecoder.decodeDouble(forKey: "latitude")
+        longitude = aDecoder.decodeDouble(forKey: "longitude")
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeDouble(latitude, forKey: "latitude")
-        aCoder.encodeDouble(longitude, forKey: "longitude")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(latitude, forKey: "latitude")
+        aCoder.encode(longitude, forKey: "longitude")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return LCGeoPoint(latitude: latitude, longitude: longitude)
     }
 
-    public override func isEqual(another: AnyObject?) -> Bool {
+    public override func isEqual(_ another: AnyObject?) -> Bool {
         if another === self {
             return true
         } else if let another = another as? LCGeoPoint {
@@ -108,19 +108,19 @@ public final class LCGeoPoint: NSObject, LCType, LCTypeExtension {
         return self.init()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }

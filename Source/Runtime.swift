@@ -17,7 +17,7 @@ class Runtime {
 
      - returns: true or false.
      */
-    static func isSubclass(subclass: AnyClass!, superclass: AnyClass!) -> Bool {
+    static func isSubclass(_ subclass: AnyClass!, superclass: AnyClass!) -> Bool {
         guard let superclass = superclass else {
             return false
         }
@@ -41,7 +41,7 @@ class Runtime {
 
      - returns: All subclasses of given base class.
      */
-    static func subclasses(baseclass: AnyClass!) -> [AnyClass] {
+    static func subclasses(_ baseclass: AnyClass!) -> [AnyClass] {
         var result = [AnyClass]()
 
         guard let baseclass = baseclass else {
@@ -54,10 +54,10 @@ class Runtime {
             return result
         }
 
-        let classes = AutoreleasingUnsafeMutablePointer<AnyClass?>(malloc(sizeof(AnyClass) * Int(count)));
+        let classes = AutoreleasingUnsafeMutablePointer<AnyClass?>(malloc(sizeof(AnyClass.self) * Int(count)))
 
         for i in 0..<Int(objc_getClassList(classes, count)) {
-            guard let someclass = classes[i] else {
+            guard let someclass = classes?[i] else {
                 continue
             }
 
@@ -78,7 +78,7 @@ class Runtime {
 
      - returns: The toposort of classes.
      */
-    static func toposort(classes classes: [AnyClass]) -> [AnyClass] {
+    static func toposort(classes: [AnyClass]) -> [AnyClass] {
         var result: [AnyClass] = []
         var visitStatusTable: [UInt: Int] = [:]
 
@@ -87,14 +87,14 @@ class Runtime {
         return result
     }
 
-    private static func toposortStart(classes classes: [AnyClass], inout _ result: [AnyClass], inout _ visitStatusTable: [UInt: Int]) {
+    private static func toposortStart(classes: [AnyClass], _ result: inout [AnyClass], _ visitStatusTable: inout [UInt: Int]) {
         classes.forEach { aClass in
             toposortVisit(aClass: aClass, classes, &result, &visitStatusTable)
         }
     }
 
-    private static func toposortVisit(aClass aClass: AnyClass, _ classes: [AnyClass], inout _ result: [AnyClass], inout _ visitStatusTable: [UInt: Int]) {
-        let key = ObjectIdentifier(aClass).uintValue
+    private static func toposortVisit(aClass: AnyClass, _ classes: [AnyClass], _ result: inout [AnyClass], _ visitStatusTable: inout [UInt: Int]) {
+        let key = UInt(ObjectIdentifier(aClass))
 
         switch visitStatusTable[key] ?? 0 {
         case 0: /* Unvisited */
@@ -109,7 +109,7 @@ class Runtime {
 
             visitStatusTable[key] = 2
 
-            if classes.contains({ $0 === aClass }) {
+            if classes.contains(where: { $0 === aClass }) {
                 result.append(aClass)
             }
         case 1: /* Visiting */
@@ -127,14 +127,14 @@ class Runtime {
 
      - returns: An array of all properties of the given class.
      */
-    static func properties(aClass: AnyClass) -> [objc_property_t] {
+    static func properties(_ aClass: AnyClass) -> [objc_property_t] {
         var result = [objc_property_t]()
 
         var count: UInt32 = 0
-        let properties: UnsafeMutablePointer<objc_property_t> = class_copyPropertyList(aClass, &count)
+        let properties: UnsafeMutablePointer<objc_property_t?>? = class_copyPropertyList(aClass, &count)
 
         for i in 0..<Int(count) {
-            result.append(properties[i])
+            result.append(properties![i]!)
         }
 
         return result
@@ -147,7 +147,7 @@ class Runtime {
 
      - returns: An array of all non-computed properties of the given class.
      */
-    static func nonComputedProperties(aClass: AnyClass) -> [objc_property_t] {
+    static func nonComputedProperties(_ aClass: AnyClass) -> [objc_property_t] {
         let properties = self.properties(aClass)
 
         return properties.filter { (property) -> Bool in
@@ -160,8 +160,8 @@ class Runtime {
 
      - parameter property: Inspected property.
      */
-    static func typeEncoding(property: objc_property_t) -> String {
-        return String(UTF8String: property_copyAttributeValue(property, "T"))!
+    static func typeEncoding(_ property: objc_property_t) -> String {
+        return String(validatingUTF8: property_copyAttributeValue(property, "T"))!
     }
 
     /**
@@ -169,8 +169,8 @@ class Runtime {
 
      - parameter property: Inspected property.
      */
-    static func propertyName(property: objc_property_t) -> String {
-        return String(UTF8String: property_getName(property))!
+    static func propertyName(_ property: objc_property_t) -> String {
+        return String(validatingUTF8: property_getName(property))!
     }
 
     /**
@@ -181,7 +181,7 @@ class Runtime {
 
      - returns: Instance variable correspond to the property name.
      */
-    static func instanceVariable(aClass: AnyClass, _ propertyName: String) -> Ivar {
+    static func instanceVariable(_ aClass: AnyClass, _ propertyName: String) -> Ivar? {
         let property = class_getProperty(aClass, propertyName)
 
         if property != nil {
@@ -199,7 +199,7 @@ class Runtime {
 
      - returns: Value of instance variable correspond to the property name.
      */
-    static func instanceVariableValue(object: AnyObject, _ propertyName: String) -> AnyObject? {
+    static func instanceVariableValue(_ object: AnyObject, _ propertyName: String) -> AnyObject? {
         let instanceVariable = self.instanceVariable(object_getClass(object), propertyName)
 
         if instanceVariable != nil {
@@ -216,7 +216,7 @@ class Runtime {
      - parameter propertyName: Property name on which you want to set.
      - parameter value:        New property value.
      */
-    static func setInstanceVariable(object: AnyObject, _ propertyName: String, _ value: AnyObject?) {
+    static func setInstanceVariable(_ object: AnyObject, _ propertyName: String, _ value: AnyObject?) {
         object_setIvar(object, instanceVariable(object_getClass(object), propertyName), value)
     }
 
@@ -227,7 +227,7 @@ class Runtime {
 
      - returns: An retained object.
      */
-    static func retainedObject<T: AnyObject>(object: T?) -> T? {
+    static func retainedObject<T: AnyObject>(_ object: T?) -> T? {
         return object != nil ? Unmanaged.passRetained(object!).takeUnretainedValue() : nil
     }
 }

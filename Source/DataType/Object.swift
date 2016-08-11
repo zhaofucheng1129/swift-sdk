@@ -15,7 +15,7 @@ import Foundation
  It can be extended into subclass while adding some other properties to form a new type.
  Each object is correspond to a record in data storage.
  */
-public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
+public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
     /// Access control lists.
     public dynamic var ACL: LCACL?
 
@@ -78,18 +78,18 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        propertyTable = (aDecoder.decodeObjectForKey("propertyTable") as? LCDictionary) ?? [:]
+        propertyTable = (aDecoder.decodeObject(forKey: "propertyTable") as? LCDictionary) ?? [:]
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(propertyTable, forKey: "propertyTable")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(propertyTable, forKey: "propertyTable")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return self
     }
 
-    public override func isEqual(another: AnyObject?) -> Bool {
+    public override func isEqual(_ another: AnyObject?) -> Bool {
         if another === self {
             return true
         } else if another?.objectId != nil && objectId != nil {
@@ -99,16 +99,16 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
         }
     }
 
-    public override func valueForKey(key: String) -> AnyObject? {
+    public override func value(forKey key: String) -> AnyObject? {
         guard let value = get(key) else {
-            return super.valueForKey(key)
+            return super.value(forKey: key)
         }
 
         return value
     }
 
-    public func generate() -> DictionaryGenerator<String, LCType> {
-        return propertyTable.generate()
+    public func makeIterator() -> DictionaryIterator<String, LCType> {
+        return propertyTable.makeIterator()
     }
 
     public var JSONValue: AnyObject {
@@ -140,24 +140,24 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
         return self.init()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         propertyTable.forEachChild(body)
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 
     /// The dispatch queue for network request task.
-    static let backgroundQueue = dispatch_queue_create("LeanCloud.Object", DISPATCH_QUEUE_CONCURRENT)
+    static let backgroundQueue = DispatchQueue(label: "LeanCloud.Object", attributes: .concurrent)
 
     /**
      Set class name of current type.
@@ -167,11 +167,11 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - returns: The class name of current type.
      */
     public class func objectClassName() -> String {
-        let className = String(UTF8String: class_getName(self))!
+        let className = String(validatingUTF8: class_getName(self))!
 
         /* Strip root namespace to cope with application package name's change. */
-        if let index = className.characters.indexOf(".") {
-            return className.substringFromIndex(index.successor())
+        if let index = className.characters.index(of: ".") {
+            return className.substring(from: className.index(after: index))
         } else {
             return className
         }
@@ -193,7 +193,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The property value.
      */
-    func getProperty<Value: LCType>(key: String) -> Value? {
+    func getProperty<Value: LCType>(_ key: String) -> Value? {
         let value = propertyTable[key]
 
         if let value = value {
@@ -216,7 +216,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The property value.
      */
-    func loadProperty<Value: LCType>(key: String) -> Value {
+    func loadProperty<Value: LCType>(_ key: String) -> Value {
         if let value: Value = getProperty(key) {
             return value
         }
@@ -232,12 +232,12 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter operation: The operation used to update property.
      */
-    func updateProperty(operation: Operation) {
+    func updateProperty(_ operation: Operation) {
         let key   = operation.key
         let name  = operation.name
         let value = operation.value
 
-        self.willChangeValueForKey(key)
+        self.willChangeValue(forKey: key)
 
         switch name {
         case .Set:
@@ -276,7 +276,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
             relation?.removeElements(elements)
         }
 
-        self.didChangeValueForKey(key)
+        self.didChangeValue(forKey: key)
     }
 
     /**
@@ -286,7 +286,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:   The operation key.
      - parameter value: The operation value.
      */
-    func addOperation(name: Operation.Name, _ key: String, _ value: LCType? = nil) {
+    func addOperation(_ name: Operation.Name, _ key: String, _ value: LCType? = nil) {
         let operation = Operation(name: name, key: key, value: value)
 
         updateProperty(operation)
@@ -301,7 +301,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The transformed value for key.
      */
-    func transformValue(key: String, _ value: LCType?) -> LCType? {
+    func transformValue(_ key: String, _ value: LCType?) -> LCType? {
         guard let value = value else {
             return nil
         }
@@ -322,10 +322,10 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:   The property key to be updated.
      - parameter value: The property value.
      */
-    func update(key: String, _ value: LCType?) {
-        self.willChangeValueForKey(key)
+    func update(_ key: String, _ value: LCType?) {
+        self.willChangeValue(forKey: key)
         propertyTable[key] = transformValue(key, value)
-        self.didChangeValueForKey(key)
+        self.didChangeValue(forKey: key)
     }
 
     /**
@@ -343,7 +343,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The value for key.
      */
-    public func get(key: String) -> LCType? {
+    public func get(_ key: String) -> LCType? {
         return propertyTable[key]
     }
 
@@ -354,14 +354,14 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - throws: A MalformedData error if key is invalid.
      */
-    func validateKey(key: String) throws {
-        let options: NSStringCompareOptions = [
-            .RegularExpressionSearch,
-            .CaseInsensitiveSearch
+    func validateKey(_ key: String) throws {
+        let options: NSString.CompareOptions = [
+            .regularExpression,
+            .caseInsensitive
         ]
 
-        guard key.rangeOfString("^[a-z0-9][a-z0-9_]*$", options: options) != nil else {
-            throw LCError(code: .MalformedData, reason: "Key is not well-formatted.", userInfo: ["key": key])
+        guard key.range(of: "^[a-z0-9][a-z0-9_]*$", options: options) != nil else {
+            throw LCError(code: .malformedData, reason: "Key is not well-formatted.", userInfo: ["key": key])
         }
     }
 
@@ -371,7 +371,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:   The key for which to set the value.
      - parameter value: The new value.
      */
-    public func set(key: String, value: LCType?) {
+    public func set(_ key: String, value: LCType?) {
         try! validateKey(key)
 
         if let value = value {
@@ -387,7 +387,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:    The key for which to set the object.
      - parameter object: The new object.
      */
-    public func set(key: String, object: AnyObject?) {
+    public func set(_ key: String, object: AnyObject?) {
         if let object = object {
             set(key, value: try! ObjectProfiler.object(JSONValue: object))
         } else {
@@ -400,7 +400,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter key: The key for which to unset.
      */
-    public func unset(key: String) {
+    public func unset(_ key: String) {
         addOperation(.Delete, key, nil)
     }
 
@@ -410,7 +410,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:    The key of number which you want to increase.
      - parameter amount: The amount to increase.
      */
-    public func increase(key: String, by: LCNumber) {
+    public func increase(_ key: String, by: LCNumber) {
         addOperation(.Increment, key, by)
     }
 
@@ -420,7 +420,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:     The key of array into which you want to append the element.
      - parameter element: The element to append.
      */
-    public func append(key: String, element: LCType) {
+    public func append(_ key: String, element: LCType) {
         addOperation(.Add, key, LCArray([element]))
     }
 
@@ -430,7 +430,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:      The key of array into which you want to append the elements.
      - parameter elements: The array of elements to append.
      */
-    public func append(key: String, elements: [LCType]) {
+    public func append(_ key: String, elements: [LCType]) {
         addOperation(.Add, key, LCArray(elements))
     }
 
@@ -443,7 +443,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
                           If true, element will not be appended if it had already existed in array;
                           otherwise, element will always be appended.
      */
-    public func append(key: String, element: LCType, unique: Bool) {
+    public func append(_ key: String, element: LCType, unique: Bool) {
         addOperation(unique ? .AddUnique : .Add, key, LCArray([element]))
     }
 
@@ -456,7 +456,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter elements: The array of elements to append.
      - parameter unique:   Whether append element by unique or not.
      */
-    public func append(key: String, elements: [LCType], unique: Bool) {
+    public func append(_ key: String, elements: [LCType], unique: Bool) {
         addOperation(unique ? .AddUnique : .Add, key, LCArray(elements))
     }
 
@@ -466,7 +466,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:     The key of array from which you want to remove the element.
      - parameter element: The element to remove.
      */
-    public func remove(key: String, element: LCType) {
+    public func remove(_ key: String, element: LCType) {
         addOperation(.Remove, key, LCArray([element]))
     }
 
@@ -476,7 +476,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:      The key of array from which you want to remove the element.
      - parameter elements: The array of elements to remove.
      */
-    public func remove(key: String, elements: [LCType]) {
+    public func remove(_ key: String, elements: [LCType]) {
         addOperation(.Remove, key, LCArray(elements))
     }
 
@@ -487,7 +487,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The relation for key.
      */
-    public func relationForKey(key: String) -> LCRelation {
+    public func relationForKey(_ key: String) -> LCRelation {
         return LCRelation(key: key, parent: self)
     }
 
@@ -497,7 +497,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:    The key of relation into which you want to insert the object.
      - parameter object: The object to insert.
      */
-    public func insertRelation(key: String, object: LCObject) {
+    public func insertRelation(_ key: String, object: LCObject) {
         addOperation(.AddRelation, key, LCArray([object]))
     }
 
@@ -507,7 +507,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter key:    The key of relation from which you want to remove the object.
      - parameter object: The object to remove.
      */
-    public func removeRelation(key: String, object: LCObject) {
+    public func removeRelation(_ key: String, object: LCObject) {
         addOperation(.RemoveRelation, key, LCArray([object]))
     }
 
@@ -534,7 +534,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter task:       The task to be performed.
      - parameter completion: The completion closure to be called on main thread after task finished.
      */
-    func asynchronize<Result>(task: () -> Result, completion: (Result) -> Void) {
+    func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
         LCObject.asynchronize(task, completion: completion)
     }
 
@@ -544,7 +544,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
      - parameter task:       The task to be performed.
      - parameter completion: The completion closure to be called on main thread after task finished.
      */
-    static func asynchronize<Result>(task: () -> Result, completion: (Result) -> Void) {
+    static func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
         Utility.asynchronize(task, backgroundQueue, completion)
     }
 
@@ -562,7 +562,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter completion: The completion callback closure.
      */
-    public func save(completion: (LCBooleanResult) -> Void) {
+    public func save(_ completion: (LCBooleanResult) -> Void) {
         asynchronize({ self.save() }) { result in
             completion(result)
         }
@@ -575,7 +575,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The result of deletion request.
      */
-    public static func delete(objects: [LCObject]) -> LCBooleanResult {
+    public static func delete(_ objects: [LCObject]) -> LCBooleanResult {
         return LCBooleanResult(response: ObjectUpdater.delete(objects))
     }
 
@@ -584,7 +584,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter completion: The completion callback closure.
      */
-    public static func delete(objects: [LCObject], completion: (LCBooleanResult) -> Void) {
+    public static func delete(_ objects: [LCObject], completion: (LCBooleanResult) -> Void) {
         asynchronize({ delete(objects) }) { result in
             completion(result)
         }
@@ -604,7 +604,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter completion: The completion callback closure.
      */
-    public func delete(completion: (LCBooleanResult) -> Void) {
+    public func delete(_ completion: (LCBooleanResult) -> Void) {
         asynchronize({ self.delete() }) { result in
             completion(result)
         }
@@ -617,7 +617,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - returns: The result of fetching request.
      */
-    public static func fetch(objects: [LCObject]) -> LCBooleanResult {
+    public static func fetch(_ objects: [LCObject]) -> LCBooleanResult {
         return LCBooleanResult(response: ObjectUpdater.fetch(objects))
     }
 
@@ -626,7 +626,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter completion: The completion callback closure.
      */
-    public static func fetch(objects: [LCObject], completion: (LCBooleanResult) -> Void) {
+    public static func fetch(_ objects: [LCObject], completion: (LCBooleanResult) -> Void) {
         asynchronize({ fetch(objects) }) { result in
             completion(result)
         }
@@ -646,7 +646,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter completion: The completion callback closure.
      */
-    public func fetch(completion: (LCBooleanResult) -> Void) {
+    public func fetch(_ completion: (LCBooleanResult) -> Void) {
         asynchronize({ self.fetch() }) { result in
             completion(result)
         }

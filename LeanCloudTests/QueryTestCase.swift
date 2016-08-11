@@ -16,7 +16,7 @@ let sharedObject: TestObject = {
     object.booleanField  = true
     object.stringField   = "foo"
     object.arrayField    = [LCNumber(42), LCString("bar"), sharedElement]
-    object.dateField     = LCDate(NSDate(timeIntervalSince1970: 1024))
+    object.dateField     = LCDate(Date(timeIntervalSince1970: 1024))
     object.geoPointField = LCGeoPoint(latitude: 45, longitude: -45)
     object.objectField   = sharedChild
     object.nullField     = LCNull()
@@ -60,13 +60,13 @@ class QueryTestCase: BaseTestCase {
         super.tearDown()
     }
 
-    func execute<T: LCObject>(query: LCQuery) -> (isSuccess: Bool, objects: [T]) {
+    func execute<T: LCObject>(_ query: LCQuery) -> (isSuccess: Bool, objects: [T]) {
         let result: LCQueryResult<T> = query.find()
 
         switch result {
-        case let .Success(objects):
+        case let .success(objects):
             return (true, objects)
-        case .Failure:
+        case .failure:
             return (false, [])
         }
     }
@@ -76,8 +76,8 @@ class QueryTestCase: BaseTestCase {
     }
 
     func testInvalidClassName() {
-        XCTAssertThrowsException {
-            LCQuery(className: "Foo").and(LCQuery(className: "Bar"))
+        xctAssertThrowsException {
+            _ = LCQuery(className: "Foo").and(LCQuery(className: "Bar"))
         }
     }
 
@@ -87,8 +87,8 @@ class QueryTestCase: BaseTestCase {
         XCTAssertTrue(object.save().isSuccess)
 
         let query = objectQuery()
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("objectField", .Included)
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("objectField", .included)
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -104,9 +104,9 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("stringField", .Selected)
-        query.whereKey("booleanField", .Selected)
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("stringField", .selected)
+        query.whereKey("booleanField", .selected)
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -122,8 +122,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("stringField", .Existed)
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("stringField", .existed)
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -131,7 +131,7 @@ class QueryTestCase: BaseTestCase {
 
     func testNotExisted() {
         let query = objectQuery()
-        query.whereKey("objectId", .NotExisted)
+        query.whereKey("objectId", .notExisted)
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && objects.isEmpty)
@@ -141,13 +141,13 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("dateField", .EqualTo(LCDate(NSDate(timeIntervalSince1970: 1024))))
-        query.whereKey("nullField", .EqualTo(LCNull()))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("dateField", .equalTo(LCDate(Date(timeIntervalSince1970: 1024))))
+        query.whereKey("nullField", .equalTo(LCNull()))
 
         /* Tip: You can use EqualTo to compare an value against elements in an array field.
            If the given value is equal to any element in the array referenced by key, the comparation will be successful. */
-        query.whereKey("arrayField", .EqualTo(sharedElement))
+        query.whereKey("arrayField", .equalTo(sharedElement))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -157,8 +157,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("numberField", .NotEqualTo(LCNumber(42)))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("numberField", .notEqualTo(LCNumber(42)))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && objects.isEmpty)
@@ -168,14 +168,14 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("numberField", .LessThan(LCNumber(42)))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("numberField", .lessThan(LCNumber(42)))
 
         let (isSuccess1, objects1) = execute(query)
         XCTAssertTrue(isSuccess1 && objects1.isEmpty)
 
-        query.whereKey("numberField", .LessThan(LCNumber(43)))
-        query.whereKey("dateField", .LessThan(LCDate(NSDate(timeIntervalSince1970: 1025))))
+        query.whereKey("numberField", .lessThan(LCNumber(43)))
+        query.whereKey("dateField", .lessThan(LCDate(Date(timeIntervalSince1970: 1025))))
 
         let (isSuccess2, objects2) = execute(query)
         XCTAssertTrue(isSuccess2 && !objects2.isEmpty)
@@ -185,8 +185,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("numberField", .LessThanOrEqualTo(LCNumber(42)))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("numberField", .lessThanOrEqualTo(LCNumber(42)))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -196,8 +196,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("numberField", .GreaterThan(LCNumber(41.9)))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("numberField", .greaterThan(LCNumber(41.9)))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -207,8 +207,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("dateField", .GreaterThanOrEqualTo(LCDate(NSDate(timeIntervalSince1970: 1023.9))))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("dateField", .greaterThanOrEqualTo(LCDate(Date(timeIntervalSince1970: 1023.9))))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -218,14 +218,14 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
+        query.whereKey("objectId", .equalTo(object.objectId!))
 
         /* Tip: You can use ContainedIn to compare an array of values against a non-array field.
            If any value in given array is equal to the value referenced by key, the comparation will be successful. */
-        query.whereKey("dateField", .ContainedIn([LCDate(NSDate(timeIntervalSince1970: 1024))]))
+        query.whereKey("dateField", .containedIn([LCDate(Date(timeIntervalSince1970: 1024))]))
 
         /* Tip: Also, you can apply the constraint to array field. */
-        query.whereKey("arrayField", .ContainedIn([LCNumber(42), LCString("bar")]))
+        query.whereKey("arrayField", .containedIn([LCNumber(42), LCString("bar")]))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -235,13 +235,13 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
+        query.whereKey("objectId", .equalTo(object.objectId!))
 
         /* Tip: Like ContainedIn, you can apply NotContainedIn to non-array field. */
-        query.whereKey("numberField", .NotContainedIn([LCNumber(42)]))
+        query.whereKey("numberField", .notContainedIn([LCNumber(42)]))
 
         /* Tip: Also, you can apply the constraint to array field. */
-        query.whereKey("arrayField", .NotContainedIn([LCNumber(42), LCString("bar")]))
+        query.whereKey("arrayField", .notContainedIn([LCNumber(42), LCString("bar")]))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && objects.isEmpty)
@@ -251,13 +251,13 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
+        query.whereKey("objectId", .equalTo(object.objectId!))
 
         /* Tip: Like ContainedIn, you can apply ContainedAllIn to non-array field. */
-        query.whereKey("numberField", .ContainedAllIn([LCNumber(42)]))
+        query.whereKey("numberField", .containedAllIn([LCNumber(42)]))
 
         /* Tip: Also, you can apply the constraint to array field. */
-        query.whereKey("arrayField", .ContainedAllIn([LCNumber(42), LCString("bar"), sharedElement]))
+        query.whereKey("arrayField", .containedAllIn([LCNumber(42), LCString("bar"), sharedElement]))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -267,8 +267,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("arrayField", .EqualToSize(3))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("arrayField", .equalToSize(3))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -277,7 +277,7 @@ class QueryTestCase: BaseTestCase {
     func testNearbyPoint() {
         let query = objectQuery()
 
-        query.whereKey("geoPointField", .NearbyPoint(LCGeoPoint(latitude: 45, longitude: -45)))
+        query.whereKey("geoPointField", .nearbyPoint(LCGeoPoint(latitude: 45, longitude: -45)))
         query.limit = 1
 
         let (isSuccess, objects) = execute(query)
@@ -292,7 +292,7 @@ class QueryTestCase: BaseTestCase {
         let from = LCGeoPoint.Distance(value: 0, unit: .Kilometer)
         let to   = LCGeoPoint.Distance(value: 150, unit: .Kilometer)
 
-        query.whereKey("geoPointField", .NearbyPointWithRange(origin: LCGeoPoint(latitude: 44, longitude: -45), from: from, to: to))
+        query.whereKey("geoPointField", .nearbyPointWithRange(origin: LCGeoPoint(latitude: 44, longitude: -45), from: from, to: to))
         query.limit = 1
 
         let (isSuccess, objects) = execute(query)
@@ -305,7 +305,7 @@ class QueryTestCase: BaseTestCase {
         let southwest = LCGeoPoint(latitude: 44, longitude: -46)
         let northeast = LCGeoPoint(latitude: 46, longitude: -44)
 
-        query.whereKey("geoPointField", .NearbyPointWithRectangle(southwest: southwest, northeast: northeast))
+        query.whereKey("geoPointField", .nearbyPointWithRectangle(southwest: southwest, northeast: northeast))
         query.limit = 1
 
         let (isSuccess, objects) = execute(query)
@@ -318,11 +318,11 @@ class QueryTestCase: BaseTestCase {
         let query    = objectQuery()
         let subQuery = objectQuery()
 
-        subQuery.whereKey("objectId", .EqualTo(child.objectId!))
-        subQuery.whereKey("stringField", .EqualTo(LCString("child")))
+        subQuery.whereKey("objectId", .equalTo(child.objectId!))
+        subQuery.whereKey("stringField", .equalTo(LCString("child")))
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("objectField", .MatchedQuery(subQuery))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("objectField", .matchedQuery(subQuery))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -333,10 +333,10 @@ class QueryTestCase: BaseTestCase {
         let query    = objectQuery()
         let subQuery = objectQuery()
 
-        subQuery.whereKey("objectId", .EqualTo(sharedChild.objectId!))
+        subQuery.whereKey("objectId", .equalTo(sharedChild.objectId!))
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("objectField", .NotMatchedQuery(subQuery))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("objectField", .notMatchedQuery(subQuery))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && objects.isEmpty)
@@ -347,8 +347,8 @@ class QueryTestCase: BaseTestCase {
         let query    = objectQuery()
         let subQuery = objectQuery()
 
-        subQuery.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("objectId", .MatchedQueryAndKey(query: subQuery, key: "objectId"))
+        subQuery.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("objectId", .matchedQueryAndKey(query: subQuery, key: "objectId"))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -360,8 +360,8 @@ class QueryTestCase: BaseTestCase {
         let query    = objectQuery()
         let subQuery = objectQuery()
 
-        subQuery.whereKey("objectId", .NotEqualTo(object.objectId!))
-        query.whereKey("objectId", .NotMatchedQueryAndKey(query: subQuery, key: "objectId"))
+        subQuery.whereKey("objectId", .notEqualTo(object.objectId!))
+        query.whereKey("objectId", .notMatchedQueryAndKey(query: subQuery, key: "objectId"))
 
         let (isSuccess, objects) = execute(query)
 
@@ -375,8 +375,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("stringField", .MatchedPattern("^foo$", option: nil))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("stringField", .matchedPattern("^foo$", option: nil))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -387,8 +387,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("stringField", .MatchedSubstring("foo"))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("stringField", .matchedSubstring("foo"))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -399,8 +399,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("stringField", .PrefixedBy("f"))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("stringField", .prefixedBy("f"))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -411,8 +411,8 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
-        query.whereKey("stringField", .SuffixedBy("o"))
+        query.whereKey("objectId", .equalTo(object.objectId!))
+        query.whereKey("stringField", .suffixedBy("o"))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -424,8 +424,8 @@ class QueryTestCase: BaseTestCase {
         let friend = sharedFriend
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(friend.objectId!))
-        query.whereKey("relationField", .RelatedTo(object))
+        query.whereKey("objectId", .equalTo(friend.objectId!))
+        query.whereKey("relationField", .relatedTo(object))
 
         let (isSuccess, objects) = execute(query)
         XCTAssertTrue(isSuccess && !objects.isEmpty)
@@ -437,8 +437,8 @@ class QueryTestCase: BaseTestCase {
         let child  = sharedChild
         let query  = objectQuery()
 
-        query.whereKey("objectId", .ContainedIn([object.objectId!, child.objectId!]))
-        query.whereKey("objectId", .Ascending)
+        query.whereKey("objectId", .containedIn([object.objectId!, child.objectId!]))
+        query.whereKey("objectId", .ascending)
 
         let (isSuccess, objects) = execute(query)
 
@@ -447,7 +447,7 @@ class QueryTestCase: BaseTestCase {
         let objectId1 = objects[0].objectId!
         let objectId2 = objects.last?.objectId!
 
-        XCTAssertTrue((objectId1.value as NSString).compare(objectId2!.value) == .OrderedAscending)
+        XCTAssertTrue((objectId1.value as NSString).compare(objectId2!.value) == .orderedAscending)
     }
 
     func testDescending() {
@@ -455,8 +455,8 @@ class QueryTestCase: BaseTestCase {
         let child  = sharedChild
         let query  = objectQuery()
 
-        query.whereKey("objectId", .ContainedIn([object.objectId!, child.objectId!]))
-        query.whereKey("objectId", .Descending)
+        query.whereKey("objectId", .containedIn([object.objectId!, child.objectId!]))
+        query.whereKey("objectId", .descending)
 
         let (isSuccess, objects) = execute(query)
 
@@ -465,7 +465,7 @@ class QueryTestCase: BaseTestCase {
         let objectId1 = objects[0].objectId!
         let objectId2 = objects.last?.objectId!
 
-        XCTAssertTrue((objectId1.value as NSString).compare(objectId2!.value) == .OrderedDescending)
+        XCTAssertTrue((objectId1.value as NSString).compare(objectId2!.value) == .orderedDescending)
     }
 
     func testLogicAnd() {
@@ -474,8 +474,8 @@ class QueryTestCase: BaseTestCase {
         let query1  = objectQuery()
         let query2  = objectQuery()
 
-        query1.whereKey("objectId", .EqualTo(object.objectId!))
-        query2.whereKey("objectId", .EqualTo(child.objectId!))
+        query1.whereKey("objectId", .equalTo(object.objectId!))
+        query2.whereKey("objectId", .equalTo(child.objectId!))
 
         let query = query1.and(query2)
         let (isSuccess, objects) = execute(query)
@@ -488,8 +488,8 @@ class QueryTestCase: BaseTestCase {
         let query1  = objectQuery()
         let query2  = objectQuery()
 
-        query1.whereKey("objectId", .EqualTo(object.objectId!))
-        query2.whereKey("objectId", .EqualTo(child.objectId!))
+        query1.whereKey("objectId", .equalTo(object.objectId!))
+        query2.whereKey("objectId", .equalTo(child.objectId!))
 
         let query = query1.or(query2)
         let (isSuccess, objects) = execute(query)
@@ -501,7 +501,7 @@ class QueryTestCase: BaseTestCase {
         let child  = sharedChild
         let query  = objectQuery()
 
-        query.whereKey("objectId", .ContainedIn([object.objectId!, child.objectId!]))
+        query.whereKey("objectId", .containedIn([object.objectId!, child.objectId!]))
 
         let count = query.count().intValue
         XCTAssertEqual(count, 2)
@@ -511,7 +511,7 @@ class QueryTestCase: BaseTestCase {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
+        query.whereKey("objectId", .equalTo(object.objectId!))
 
         let result = query.getFirst()
         XCTAssertNil(query.limit)
@@ -542,24 +542,24 @@ class QueryTestCase: BaseTestCase {
         let query = objectQuery()
         let matchedQuery = objectQuery()
 
-        query.whereKey("stringField", .MatchedQuery(matchedQuery))
+        query.whereKey("stringField", .matchedQuery(matchedQuery))
 
         let queryCopy = query.copy() as! LCQuery
-        let queryArchivement = NSKeyedUnarchiver.unarchiveObjectWithData(NSKeyedArchiver.archivedDataWithRootObject(query)) as! LCQuery
+        let queryArchivement = NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: query)) as! LCQuery
 
         matchedQuery.limit = 42
 
         let keyPath = "where.stringField.$inQuery.limit"
 
-        XCTAssertEqual((queryCopy.LCONValue as NSDictionary).valueForKeyPath(keyPath) as? Int, 42)
-        XCTAssertNil((queryArchivement.LCONValue as NSDictionary).valueForKeyPath(keyPath))
+        XCTAssertEqual((queryCopy.LCONValue as NSDictionary).value(forKeyPath: keyPath) as? Int, 42)
+        XCTAssertNil((queryArchivement.LCONValue as NSDictionary).value(forKeyPath: keyPath))
     }
 
     func testSkip() {
         let object = sharedObject
         let query  = objectQuery()
 
-        query.whereKey("objectId", .EqualTo(object.objectId!))
+        query.whereKey("objectId", .equalTo(object.objectId!))
         query.skip = 1
 
         let objects = query.find().objects ?? []

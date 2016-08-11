@@ -14,21 +14,21 @@ import Foundation
  This type used to represent a point in UTC time.
  */
 public final class LCDate: NSObject, LCType, LCTypeExtension {
-    public private(set) var value: NSDate = NSDate()
+    public private(set) var value: Date = Date()
 
-    static let dateFormatter: NSDateFormatter = {
-        let formatter = NSDateFormatter()
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'"
-        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         return formatter
     }()
 
-    static func dateFromString(string: String) -> NSDate? {
-        return dateFormatter.dateFromString(string)
+    static func dateFromString(_ string: String) -> Date? {
+        return dateFormatter.date(from: string)
     }
 
-    static func stringFromDate(date: NSDate) -> String {
-        return dateFormatter.stringFromDate(date)
+    static func stringFromDate(_ date: Date) -> String {
+        return dateFormatter.string(from: date)
     }
 
     var ISOString: String {
@@ -39,7 +39,7 @@ public final class LCDate: NSObject, LCType, LCTypeExtension {
         super.init()
     }
 
-    public convenience init(_ date: NSDate) {
+    public convenience init(_ date: Date) {
         self.init()
         value = date
     }
@@ -73,7 +73,7 @@ public final class LCDate: NSObject, LCType, LCTypeExtension {
     }
 
     init?(JSONValue: AnyObject?) {
-        var value: NSDate?
+        var value: Date?
 
         switch JSONValue {
         case let ISOString as String:
@@ -96,22 +96,22 @@ public final class LCDate: NSObject, LCType, LCTypeExtension {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = (aDecoder.decodeObjectForKey("value") as? NSDate) ?? NSDate()
+        value = (aDecoder.decodeObject(forKey: "value") as? Date) ?? Date()
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
-        return LCDate(value.copy() as! NSDate)
+    public func copy(with zone: NSZone?) -> AnyObject {
+        return LCDate((value as NSDate).copy() as! Date)
     }
 
-    public override func isEqual(another: AnyObject?) -> Bool {
+    public override func isEqual(_ another: AnyObject?) -> Bool {
         if another === self {
             return true
         } else if let another = another as? LCDate {
-            return another.value.isEqualToDate(value)
+            return (another.value as NSDate).isEqual(to: value)
         } else {
             return false
         }
@@ -136,19 +136,19 @@ public final class LCDate: NSObject, LCType, LCTypeExtension {
         return self.init()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }

@@ -15,7 +15,7 @@ infix operator +~ {
 func +(lhs: [LCType], rhs: [LCType]) -> [LCType] {
     var result = lhs
 
-    result.appendContentsOf(rhs)
+    result.append(contentsOf: rhs)
 
     return result
 }
@@ -51,11 +51,11 @@ func -<T: LCType>(lhs: [T], rhs: [T]) -> [T] {
 }
 
 func *(lhs: String, rhs: Int) -> String {
-    return "".stringByPaddingToLength(rhs * lhs.characters.count, withString: lhs, startingAtIndex: 0)
+    return "".padding(toLength: rhs * lhs.characters.count, withPad: lhs, startingAt: 0)
 }
 
 extension Dictionary {
-    init(elements: [Element]) {
+    init(elements: [(Key, Value)]) {
         self.init()
 
         for (key, value) in elements {
@@ -63,7 +63,7 @@ extension Dictionary {
         }
     }
 
-    func mapValue<T>(@noescape transform: Value throws -> T) rethrows -> [Key: T] {
+    func mapValue<T>(_ transform: @noescape (Value) throws -> T) rethrows -> [Key: T] {
         let elements = try map { (key, value) in (key, try transform(value)) }
         return Dictionary<Key, T>(elements: elements)
     }
@@ -85,14 +85,14 @@ extension String {
     }
 
     var regularEscapedString: String {
-        return NSRegularExpression.escapedPatternForString(self)
+        return NSRegularExpression.escapedPattern(for: self)
     }
 
     var firstUppercaseString: String {
         guard !isEmpty else { return self }
 
         var result = self
-        result.replaceRange(startIndex...startIndex, with: String(self[startIndex]).uppercaseString)
+        result.replaceSubrange(startIndex...startIndex, with: String(self[startIndex]).uppercased())
         return result
     }
 
@@ -100,18 +100,18 @@ extension String {
         guard !isEmpty else { return self }
 
         var result = self
-        result.replaceRange(startIndex...startIndex, with: String(self[startIndex]).lowercaseString)
+        result.replaceSubrange(startIndex...startIndex, with: String(self[startIndex]).lowercased())
         return result
     }
 
     var doubleQuoteEscapedString: String {
-        return stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+        return replacingOccurrences(of: "\"", with: "\\\"")
     }
 }
 
-extension CollectionType {
-    func unique(equal: (a: Generator.Element, b: Generator.Element) -> Bool) -> [Generator.Element] {
-        var result: [Generator.Element] = []
+extension Collection {
+    func unique(_ equal: (a: Iterator.Element, b: Iterator.Element) -> Bool) -> [Iterator.Element] {
+        var result: [Iterator.Element] = []
 
         for candidate in self {
             var existed = false

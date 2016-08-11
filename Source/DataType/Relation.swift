@@ -13,7 +13,7 @@ import Foundation
 
  This type can be used to make one-to-many relationship between objects.
  */
-public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
+public final class LCRelation: NSObject, LCType, LCTypeExtension, Sequence {
     public typealias Element = LCObject
 
     /// The key where relationship based on.
@@ -59,24 +59,24 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = (aDecoder.decodeObjectForKey("value") as? [Element]) ?? []
-        objectClassName = aDecoder.decodeObjectForKey("objectClassName") as? String
+        value = (aDecoder.decodeObject(forKey: "value") as? [Element]) ?? []
+        objectClassName = aDecoder.decodeObject(forKey: "objectClassName") as? String
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
 
         if let objectClassName = objectClassName {
-            aCoder.encodeObject(objectClassName, forKey: "objectClassName")
+            aCoder.encode(objectClassName, forKey: "objectClassName")
         }
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return self
     }
 
-    public func generate() -> IndexingGenerator<[Element]> {
-        return value.generate()
+    public func makeIterator() -> IndexingIterator<[Element]> {
+        return value.makeIterator()
     }
 
     public var JSONValue: AnyObject {
@@ -103,23 +103,23 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
         return self.init()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         value.forEach { body(child: $0) }
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 
-    func validateClassName(objects: [Element]) {
+    func validateClassName(_ objects: [Element]) {
         guard !objects.isEmpty else { return }
 
         let className = effectiveObjectClassName ?? objects.first!.actualClassName
@@ -137,7 +137,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter elements: The elements to be appended.
      */
-    func appendElements(elements: [Element]) {
+    func appendElements(_ elements: [Element]) {
         validateClassName(elements)
 
         value = value + elements
@@ -148,7 +148,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter elements: The elements to be removed.
      */
-    func removeElements(elements: [Element]) {
+    func removeElements(_ elements: [Element]) {
         value = value - elements
     }
 
@@ -157,7 +157,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter child: The child that you want to insert.
      */
-    public func insert(child: LCObject) {
+    public func insert(_ child: LCObject) {
         parent!.insertRelation(key!, object: child)
     }
 
@@ -166,7 +166,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
 
      - parameter child: The child that you want to remove.
      */
-    public func remove(child: LCObject) {
+    public func remove(_ child: LCObject) {
         parent!.removeRelation(key!, object: child)
     }
 
@@ -190,7 +190,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, SequenceType {
             ]
         }
 
-        query.whereKey(key, .RelatedTo(parent))
+        query.whereKey(key, .relatedTo(parent))
 
         return query
     }

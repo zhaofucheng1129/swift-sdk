@@ -115,7 +115,7 @@ class BatchRequestBuilder {
 
      - returns: A list of request.
      */
-    static func buildRequests(object: LCObject) -> [BatchRequest] {
+    static func buildRequests(_ object: LCObject) -> [BatchRequest] {
         return operationTableList(object).map { element in
             BatchRequest(object: object, operationTable: element)
         }
@@ -128,7 +128,7 @@ class BatchRequestBuilder {
 
      - returns: The operation table list.
      */
-    private static func initialOperationTableList(object: LCObject) -> OperationTableList {
+    private static func initialOperationTableList(_ object: LCObject) -> OperationTableList {
         var operationTable: OperationTable = [:]
 
         /* Collect all non-null properties. */
@@ -154,7 +154,7 @@ class BatchRequestBuilder {
 
      - returns: A list of operation tables.
      */
-    private static func operationTableList(object: LCObject) -> OperationTableList {
+    private static func operationTableList(_ object: LCObject) -> OperationTableList {
         if object.hasObjectId {
             return object.operationHub.operationTableList()
         } else {

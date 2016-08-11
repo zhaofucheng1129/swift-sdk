@@ -13,7 +13,7 @@ import Foundation
 
  It is a wrapper of `Swift.Bool` type, used to store a boolean value.
  */
-public final class LCBool: NSObject, LCType, LCTypeExtension, BooleanLiteralConvertible {
+public final class LCBool: NSObject, LCType, LCTypeExtension, ExpressibleByBooleanLiteral {
     public private(set) var value: Bool = false
 
     public override init() {
@@ -30,18 +30,18 @@ public final class LCBool: NSObject, LCType, LCTypeExtension, BooleanLiteralConv
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = aDecoder.decodeBoolForKey("value")
+        value = aDecoder.decodeBool(forKey: "value")
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeBool(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return LCBool(value)
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         if object === self {
             return true
         } else if let object = object as? LCBool {
@@ -67,19 +67,19 @@ public final class LCBool: NSObject, LCType, LCTypeExtension, BooleanLiteralConv
         return LCBool()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }

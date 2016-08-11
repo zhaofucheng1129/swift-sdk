@@ -15,11 +15,11 @@ class Exception {
         case NotFound
     }
 
-    static func raise(name: String, reason: String? = nil, userInfo: [NSObject: AnyObject]? = nil) {
-        NSException(name: name, reason: reason, userInfo: userInfo).raise()
+    static func raise(_ name: String, reason: String? = nil, userInfo: [NSObject: AnyObject]? = nil) {
+        NSException(name: NSExceptionName(rawValue: name), reason: reason, userInfo: userInfo).raise()
     }
 
-    static func raise(name: Name, reason: String? = nil, userInfo: [NSObject: AnyObject]? = nil) {
+    static func raise(_ name: Name, reason: String? = nil, userInfo: [NSObject: AnyObject]? = nil) {
         raise(name.rawValue, reason: reason, userInfo: userInfo)
     }
 }

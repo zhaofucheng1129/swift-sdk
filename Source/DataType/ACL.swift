@@ -41,14 +41,14 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = (aDecoder.decodeObjectForKey("value") as? AccessTable) ?? [:]
+        value = (aDecoder.decodeObject(forKey: "value") as? AccessTable) ?? [:]
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         let copy = LCACL()
 
         copy.value = value
@@ -72,26 +72,26 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
         return self.init()
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         /* Nothing to do. */
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 
     /**
      Permission type.
      */
-    public struct Permission: OptionSetType {
+    public struct Permission: OptionSet {
         public let rawValue: UInt
 
         public init(rawValue: UInt) {
@@ -109,7 +109,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
 
      - returns: An access key for role name.
      */
-    static func accessKey(roleName roleName: String) -> String {
+    static func accessKey(roleName: String) -> String {
         return "role:\(roleName)"
     }
 
@@ -120,7 +120,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
 
      - returns: true if the permission is allowed, false otherwise.
      */
-    public func getAccess(permission: Permission) -> Bool {
+    public func getAccess(_ permission: Permission) -> Bool {
         return getAccess(permission, key: LCACL.publicAccessKey)
     }
 
@@ -130,7 +130,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
      - parameter permission: The permission to be set.
      - parameter allowed:    A boolean value indicates whether permission is allowed or not.
      */
-    public func setAccess(permission: Permission, allowed: Bool) {
+    public func setAccess(_ permission: Permission, allowed: Bool) {
         setAccess(permission, key: LCACL.publicAccessKey, allowed: allowed)
     }
 
@@ -142,7 +142,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
 
      - returns: true if the permission is allowed, false otherwise.
      */
-    public func getAccess(permission: Permission, forUserID userID: String) -> Bool {
+    public func getAccess(_ permission: Permission, forUserID userID: String) -> Bool {
         return getAccess(permission, key: userID)
     }
 
@@ -153,7 +153,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
      - parameter allowed:    A boolean value indicates whether permission is allowed or not.
      - parameter userID:     The user object ID for which the permission will be set.
      */
-    public func setAccess(permission: Permission, allowed: Bool, forUserID userID: String) {
+    public func setAccess(_ permission: Permission, allowed: Bool, forUserID userID: String) {
         setAccess(permission, key: userID, allowed: allowed)
     }
 
@@ -165,7 +165,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
 
      - returns: true if the permission is allowed, false otherwise.
      */
-    public func getAccess(permission: Permission, forRoleName roleName: String) -> Bool {
+    public func getAccess(_ permission: Permission, forRoleName roleName: String) -> Bool {
         return getAccess(permission, key: LCACL.accessKey(roleName: roleName))
     }
 
@@ -176,7 +176,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
      - parameter allowed:    A boolean value indicates whether permission is allowed or not.
      - parameter roleName:   The role name for which the permission will be set.
      */
-    public func setAccess(permission: Permission, allowed: Bool, forRoleName roleName: String) {
+    public func setAccess(_ permission: Permission, allowed: Bool, forRoleName roleName: String) {
         setAccess(permission, key: LCACL.accessKey(roleName: roleName), allowed: allowed)
     }
 
@@ -188,7 +188,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
 
      - returns: true if all permission is allowed, false otherwise.
      */
-    func getAccess(permission: Permission, key: String) -> Bool {
+    func getAccess(_ permission: Permission, key: String) -> Bool {
         guard let access = value[key] else {
             return false
         }
@@ -215,7 +215,7 @@ public final class LCACL: NSObject, LCType, LCTypeExtension {
      - parameter key:        The key for which the permission to be updated.
      - parameter allowed:    A boolean value indicates whether permission is allowed or not.
      */
-    func setAccess(permission: Permission, key: String, allowed: Bool) {
+    func setAccess(_ permission: Permission, key: String, allowed: Bool) {
         var access = value[key] ?? [:]
 
         /* We reserve the allowed permissions only. */

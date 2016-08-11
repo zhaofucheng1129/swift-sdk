@@ -13,7 +13,7 @@ import Foundation
 
  It is a wrapper of `Swift.Dictionary` type, used to store a dictionary value.
  */
-public final class LCDictionary: NSObject, LCType, LCTypeExtension, SequenceType, DictionaryLiteralConvertible {
+public final class LCDictionary: NSObject, LCType, LCTypeExtension, Sequence, ExpressibleByDictionaryLiteral {
     public private(set) var value: [String: LCType] = [:]
 
     public override init() {
@@ -37,18 +37,18 @@ public final class LCDictionary: NSObject, LCType, LCTypeExtension, SequenceType
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        value = (aDecoder.decodeObjectForKey("value") as? [String: LCType]) ?? [:]
+        value = (aDecoder.decodeObject(forKey: "value") as? [String: LCType]) ?? [:]
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
     }
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         return LCDictionary(value)
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         if object === self {
             return true
         } else if let object = object as? LCDictionary {
@@ -61,8 +61,8 @@ public final class LCDictionary: NSObject, LCType, LCTypeExtension, SequenceType
         }
     }
 
-    public func generate() -> DictionaryGenerator<String, LCType> {
-        return value.generate()
+    public func makeIterator() -> DictionaryIterator<String, LCType> {
+        return value.makeIterator()
     }
 
     public subscript(key: String) -> LCType? {
@@ -86,19 +86,19 @@ public final class LCDictionary: NSObject, LCType, LCTypeExtension, SequenceType
         return self.init([:])
     }
 
-    func forEachChild(body: (child: LCType) -> Void) {
+    func forEachChild(_ body: @noescape (child: LCType) -> Void) {
         forEach { body(child: $1) }
     }
 
-    func add(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be added.")
+    func add(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be added.")
     }
 
-    func concatenate(other: LCType, unique: Bool) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be concatenated.")
+    func concatenate(_ other: LCType, unique: Bool) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be concatenated.")
     }
 
-    func differ(other: LCType) throws -> LCType {
-        throw LCError(code: .InvalidType, reason: "Object cannot be differed.")
+    func differ(_ other: LCType) throws -> LCType {
+        throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 }
