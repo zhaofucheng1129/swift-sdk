@@ -59,7 +59,7 @@ public final class LCDate: NSObject, LCType, LCTypeExtension {
         guard let dataType = RESTClient.DataType(rawValue: type) else {
             return nil
         }
-        guard case dataType = RESTClient.DataType.Date else {
+        guard case dataType = RESTClient.DataType.date else {
             return nil
         }
         guard let ISOString = dictionary["iso"] as? String else {

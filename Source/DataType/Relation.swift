@@ -51,7 +51,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, Sequence {
         guard let dataType = RESTClient.DataType(rawValue: type) else {
             return nil
         }
-        guard case dataType = RESTClient.DataType.Relation else {
+        guard case dataType = RESTClient.DataType.relation else {
             return nil
         }
 
@@ -126,7 +126,7 @@ public final class LCRelation: NSObject, LCType, LCTypeExtension, Sequence {
 
         for object in objects {
             guard object.actualClassName == className else {
-                Exception.raise(.InvalidType, reason: "Invalid class name.")
+                Exception.raise(.invalidType, reason: "Invalid class name.")
                 return
             }
         }

@@ -24,17 +24,19 @@ class BatchRequest {
     }
 
     var actualMethod: RESTClient.Method {
-        return method ?? (isNewborn ? .POST : .PUT)
+        return method ?? (isNewborn ? .post : .put)
     }
 
     var path: String {
         var path: String
-        let APIVersion = RESTClient.APIVersion
+        let APIVersion = RESTClient.apiVersion
 
         switch actualMethod {
-        case .GET, .PUT, .DELETE:
+        case .get,
+             .put,
+             .delete:
             path = RESTClient.eigenEndpoint(object)!
-        case .POST:
+        case .post:
             path = RESTClient.endpoint(object)
         }
 
@@ -50,7 +52,7 @@ class BatchRequest {
 
         operationTable?.forEach { (key, operation) in
             switch operation.name {
-            case .Set:
+            case .set:
                 /* If object is newborn, put it in __children field. */
                 if let child = operation.value as? LCObject {
                     if !child.hasObjectId {
@@ -91,15 +93,16 @@ class BatchRequest {
         ]
 
         switch method {
-        case .GET:
+        case .get:
             break
-        case .POST, .PUT:
+        case .post,
+             .put:
             request["body"] = body
 
             if isNewborn {
                 request["new"] = true
             }
-        case .DELETE:
+        case .delete:
             break
         }
 
@@ -138,9 +141,9 @@ class BatchRequestBuilder {
                 /* If the property type is relation,
                    We should use "AddRelation" instead of "Set" as operation type.
                    Otherwise, the relations will added as an array. */
-                operationTable[key] = Operation(name: .AddRelation, key: key, value: LCArray(relation.value))
+                operationTable[key] = Operation(name: .addRelation, key: key, value: LCArray(relation.value))
             default:
-                operationTable[key] = Operation(name: .Set, key: key, value: value)
+                operationTable[key] = Operation(name: .set, key: key, value: value)
             }
         }
 

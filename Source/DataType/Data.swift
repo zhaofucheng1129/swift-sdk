@@ -48,7 +48,7 @@ public final class LCData: NSObject, LCType, LCTypeExtension {
         guard let dataType = RESTClient.DataType(rawValue: type) else {
             return nil
         }
-        guard case dataType = RESTClient.DataType.Bytes else {
+        guard case dataType = RESTClient.DataType.bytes else {
             return nil
         }
         guard let base64EncodedString = dictionary["base64"] as? String else {

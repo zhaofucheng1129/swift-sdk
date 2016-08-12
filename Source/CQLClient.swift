@@ -95,7 +95,7 @@ public class LCCQLClient {
      */
     public static func execute(_ CQL: String, parameters: [AnyObject] = []) -> LCCQLResult {
         let parameters = self.parameters(CQL, parameters: parameters)
-        let response   = RESTClient.request(.GET, endpoint, parameters: parameters)
+        let response   = RESTClient.request(.get, endpoint, parameters: parameters)
 
         return LCCQLResult(response: response)
     }

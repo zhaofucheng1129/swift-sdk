@@ -69,7 +69,7 @@ class ObjectUpdater {
             "requests": requests.map { request in request.JSONValue() }
         ]
 
-        let response = RESTClient.request(.POST, "batch/save", parameters: parameters)
+        let response = RESTClient.request(.post, "batch/save", parameters: parameters)
 
         if response.isSuccess {
             updateObjects(objects, response)
@@ -90,7 +90,7 @@ class ObjectUpdater {
     private static func validateObjectId(_ objects: Set<LCObject>) {
         objects.forEach { object in
             if object.objectId == nil {
-                Exception.raise(.NotFound, reason: "Object ID not found.")
+                Exception.raise(.notFound, reason: "Object ID not found.")
             }
         }
     }
@@ -195,7 +195,7 @@ class ObjectUpdater {
             return LCResponse(LCError(code: .notFound, reason: "Object not found."))
         }
 
-        return RESTClient.request(.DELETE, endpoint, parameters: nil)
+        return RESTClient.request(.delete, endpoint, parameters: nil)
     }
 
     /**
@@ -212,10 +212,10 @@ class ObjectUpdater {
         guard !objects.isEmpty else { return response }
 
         let requests = Set<T>(objects).map { object in
-            BatchRequest(object: object, method: .DELETE).JSONValue()
+            BatchRequest(object: object, method: .delete).JSONValue()
         }
 
-        response = RESTClient.request(.POST, "batch", parameters: ["requests": requests])
+        response = RESTClient.request(.post, "batch", parameters: ["requests": requests])
 
         return response
     }
@@ -295,10 +295,10 @@ class ObjectUpdater {
         }
 
         let requests = Set(objects).map { object in
-            BatchRequest(object: object, method: .GET).JSONValue()
+            BatchRequest(object: object, method: .get).JSONValue()
         }
 
-        response = RESTClient.request(.POST, "batch", parameters: ["requests": requests])
+        response = RESTClient.request(.post, "batch", parameters: ["requests": requests])
 
         response = handleFetchedResponse(response, objects)
 
@@ -315,7 +315,7 @@ class ObjectUpdater {
             return LCResponse(LCError(code: .notFound, reason: "Object not found."))
         }
 
-        let response = RESTClient.request(.GET, endpoint, parameters: nil)
+        let response = RESTClient.request(.get, endpoint, parameters: nil)
 
         guard response.isSuccess else {
             return response

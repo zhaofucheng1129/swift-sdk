@@ -18,14 +18,14 @@ class Operation {
      Operation Name.
      */
     enum Name: String {
-        case Set            = "Set"
-        case Delete         = "Delete"
-        case Increment      = "Increment"
-        case Add            = "Add"
-        case AddUnique      = "AddUnique"
-        case Remove         = "Remove"
-        case AddRelation    = "AddRelation"
-        case RemoveRelation = "RemoveRelation"
+        case set            = "Set"
+        case delete         = "Delete"
+        case increment      = "Increment"
+        case add            = "Add"
+        case addUnique      = "AddUnique"
+        case remove         = "Remove"
+        case addRelation    = "AddRelation"
+        case removeRelation = "RemoveRelation"
     }
 
     let name: Name
@@ -45,17 +45,17 @@ class Operation {
         let LCONValue = (value as? LCTypeExtension)?.LCONValue
 
         switch name {
-        case .Set:
+        case .set:
             return LCONValue!
-        case .Delete:
+        case .delete:
             return ["__op": name.rawValue]
-        case .Increment:
+        case .increment:
             return ["__op": name.rawValue, "amount": LCONValue!]
-        case .Add,
-             .AddUnique,
-             .AddRelation,
-             .Remove,
-             .RemoveRelation:
+        case .add,
+             .addUnique,
+             .addRelation,
+             .remove,
+             .removeRelation:
             return ["__op": name.rawValue, "objects": LCONValue!]
         }
     }
@@ -78,18 +78,18 @@ class Operation {
 
     var reducerType: OperationReducer.Type? {
         switch name {
-        case .Set:
+        case .set:
             return Operation.reducerType(value!.dynamicType)
-        case .Delete:
+        case .delete:
             return nil
-        case .Add,
-             .AddUnique,
-             .Remove:
+        case .add,
+             .addUnique,
+             .remove:
             return OperationReducer.Array.self
-        case .Increment:
+        case .increment:
             return OperationReducer.Number.self
-        case .AddRelation,
-             .RemoveRelation:
+        case .addRelation,
+             .removeRelation:
             return OperationReducer.Relation.self
         }
     }
@@ -273,7 +273,7 @@ class OperationReducer {
         let operationNames = self.dynamicType.validOperationNames()
 
         guard operationNames.contains(operation.name) else {
-            Exception.raise(.InvalidType, reason: "Invalid operation type.")
+            Exception.raise(.invalidType, reason: "Invalid operation type.")
             return
         }
     }
@@ -284,7 +284,7 @@ class OperationReducer {
      - parameter operation: The operation to be reduced.
      */
     func reduce(_ operation: Operation) {
-        Exception.raise(.InvalidType, reason: "Operation cannot be reduced.")
+        Exception.raise(.invalidType, reason: "Operation cannot be reduced.")
     }
 
     /**
@@ -308,7 +308,7 @@ class OperationReducer {
         var operation: Operation?
 
         override class func validOperationNames() -> [Operation.Name] {
-            return [.Set, .Delete]
+            return [.set, .delete]
         }
 
         override func reduce(_ operation: Operation) {
@@ -336,7 +336,7 @@ class OperationReducer {
         var operation: Operation?
 
         override class func validOperationNames() -> [Operation.Name] {
-            return [.Set, .Delete, .Increment]
+            return [.set, .delete, .increment]
         }
 
         override func reduce(_ operation: Operation) {
@@ -354,15 +354,15 @@ class OperationReducer {
             let rhs = operation
 
             switch (lhs.name, rhs.name) {
-            case (.Set,       .Set):       return rhs
-            case (.Delete,    .Set):       return rhs
-            case (.Increment, .Set):       return rhs
-            case (.Set,       .Delete):    return rhs
-            case (.Delete,    .Delete):    return rhs
-            case (.Increment, .Delete):    return rhs
-            case (.Set,       .Increment): return Operation(name: .Set,       key: operation.key, value: try! (lhs.value as! LCTypeExtension).add(rhs.value!))
-            case (.Delete,    .Increment): return Operation(name: .Set,       key: operation.key, value: rhs.value)
-            case (.Increment, .Increment): return Operation(name: .Increment, key: operation.key, value: try! (lhs.value as! LCTypeExtension).add(rhs.value!))
+            case (.set,       .set):       return rhs
+            case (.delete,    .set):       return rhs
+            case (.increment, .set):       return rhs
+            case (.set,       .delete):    return rhs
+            case (.delete,    .delete):    return rhs
+            case (.increment, .delete):    return rhs
+            case (.set,       .increment): return Operation(name: .set,       key: operation.key, value: try! (lhs.value as! LCTypeExtension).add(rhs.value!))
+            case (.delete,    .increment): return Operation(name: .set,       key: operation.key, value: rhs.value)
+            case (.increment, .increment): return Operation(name: .increment, key: operation.key, value: try! (lhs.value as! LCTypeExtension).add(rhs.value!))
             default:                       return nil
             }
         }
@@ -387,43 +387,43 @@ class OperationReducer {
         var operationTable: [Operation.Name:Operation] = [:]
 
         override class func validOperationNames() -> [Operation.Name] {
-            return [.Set, .Delete, .Add, .AddUnique, .Remove]
+            return [.set, .delete, .add, .addUnique, .remove]
         }
 
         override func reduce(_ operation: Operation) {
             super.validate(operation)
 
             switch operation.name {
-            case .Set:
+            case .set:
                 reset()
                 setOperation(operation)
-            case .Delete:
+            case .delete:
                 reset()
                 setOperation(operation)
-            case .Add:
-                removeObjects(operation, .Remove)
-                removeObjects(operation, .AddUnique)
+            case .add:
+                removeObjects(operation, .remove)
+                removeObjects(operation, .addUnique)
 
-                if hasOperation(.Set) || hasOperation(.Delete) {
-                    addObjects(operation, .Set)
+                if hasOperation(.set) || hasOperation(.delete) {
+                    addObjects(operation, .set)
                 } else {
-                    addObjects(operation, .Add)
+                    addObjects(operation, .add)
                 }
-            case .AddUnique:
-                removeObjects(operation, .Add)
-                removeObjects(operation, .Remove)
+            case .addUnique:
+                removeObjects(operation, .add)
+                removeObjects(operation, .remove)
 
-                if hasOperation(.Set) || hasOperation(.Delete) {
-                    addObjects(operation, .Set, unique: true)
+                if hasOperation(.set) || hasOperation(.delete) {
+                    addObjects(operation, .set, unique: true)
                 } else {
-                    addObjects(operation, .AddUnique, unique: true)
+                    addObjects(operation, .addUnique, unique: true)
                 }
-            case .Remove:
-                removeObjects(operation, .Set)
-                removeObjects(operation, .Add)
-                removeObjects(operation, .AddUnique)
+            case .remove:
+                removeObjects(operation, .set)
+                removeObjects(operation, .add)
+                removeObjects(operation, .addUnique)
 
-                addObjects(operation, .Remove, unique: true)
+                addObjects(operation, .remove, unique: true)
             default:
                 break
             }
@@ -431,7 +431,7 @@ class OperationReducer {
 
         override func operations() -> [Operation] {
             var operationTable = self.operationTable
-            removeEmptyOperation(&operationTable, [.Add, .AddUnique, .Remove])
+            removeEmptyOperation(&operationTable, [.add, .addUnique, .remove])
             return Swift.Array(operationTable.values)
         }
 
@@ -543,19 +543,19 @@ class OperationReducer {
      */
     class Relation: Array {
         override class func validOperationNames() -> [Operation.Name] {
-            return [.AddRelation, .RemoveRelation]
+            return [.addRelation, .removeRelation]
         }
 
         override func reduce(_ operation: Operation) {
             super.validate(operation)
 
             switch operation.name {
-            case .AddRelation:
-                removeObjects(operation, .RemoveRelation)
-                addObjects(operation, .AddRelation)
-            case .RemoveRelation:
-                removeObjects(operation, .AddRelation)
-                addObjects(operation, .RemoveRelation, unique: true)
+            case .addRelation:
+                removeObjects(operation, .removeRelation)
+                addObjects(operation, .addRelation)
+            case .removeRelation:
+                removeObjects(operation, .addRelation)
+                addObjects(operation, .removeRelation, unique: true)
             default:
                 break
             }

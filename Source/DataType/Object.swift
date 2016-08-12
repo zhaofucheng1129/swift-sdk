@@ -198,7 +198,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
 
         if let value = value {
             guard value is Value else {
-                Exception.raise(.InvalidType, reason: String(format: "No such a property with name \"%@\" and type \"%s\".", key, class_getName(Value.self)))
+                Exception.raise(.invalidType, reason: String(format: "No such a property with name \"%@\" and type \"%s\".", key, class_getName(Value.self)))
                 return nil
             }
         }
@@ -240,36 +240,36 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
         self.willChangeValue(forKey: key)
 
         switch name {
-        case .Set:
+        case .set:
             propertyTable[key] = value
-        case .Delete:
+        case .delete:
             propertyTable[key] = nil
-        case .Increment:
+        case .increment:
             let amount   = (value as! LCNumber).value
             let property = loadProperty(key) as LCNumber
 
             property.addInPlace(amount)
-        case .Add:
+        case .add:
             let elements = (value as! LCArray).value
             let property = loadProperty(key) as LCArray
 
             property.concatenateInPlace(elements, unique: false)
-        case .AddUnique:
+        case .addUnique:
             let elements = (value as! LCArray).value
             let property = loadProperty(key) as LCArray
 
             property.concatenateInPlace(elements, unique: true)
-        case .Remove:
+        case .remove:
             let elements = (value as! LCArray).value
             let property = getProperty(key) as LCArray?
 
             property?.differInPlace(elements)
-        case .AddRelation:
+        case .addRelation:
             let elements = (value as! LCArray).value as! [LCRelation.Element]
             let relation = loadProperty(key) as LCRelation
 
             relation.appendElements(elements)
-        case .RemoveRelation:
+        case .removeRelation:
             let relation: LCRelation? = getProperty(key)
             let elements = (value as! LCArray).value as! [LCRelation.Element]
 
@@ -375,9 +375,9 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
         try! validateKey(key)
 
         if let value = value {
-            addOperation(.Set, key, value)
+            addOperation(.set, key, value)
         } else {
-            addOperation(.Delete, key)
+            addOperation(.delete, key)
         }
     }
 
@@ -401,7 +401,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter key: The key for which to unset.
      */
     public func unset(_ key: String) {
-        addOperation(.Delete, key, nil)
+        addOperation(.delete, key, nil)
     }
 
     /**
@@ -411,7 +411,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter amount: The amount to increase.
      */
     public func increase(_ key: String, by: LCNumber) {
-        addOperation(.Increment, key, by)
+        addOperation(.increment, key, by)
     }
 
     /**
@@ -421,7 +421,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter element: The element to append.
      */
     public func append(_ key: String, element: LCType) {
-        addOperation(.Add, key, LCArray([element]))
+        addOperation(.add, key, LCArray([element]))
     }
 
     /**
@@ -431,7 +431,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter elements: The array of elements to append.
      */
     public func append(_ key: String, elements: [LCType]) {
-        addOperation(.Add, key, LCArray(elements))
+        addOperation(.add, key, LCArray(elements))
     }
 
     /**
@@ -444,7 +444,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
                           otherwise, element will always be appended.
      */
     public func append(_ key: String, element: LCType, unique: Bool) {
-        addOperation(unique ? .AddUnique : .Add, key, LCArray([element]))
+        addOperation(unique ? .addUnique : .add, key, LCArray([element]))
     }
 
     /**
@@ -457,7 +457,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter unique:   Whether append element by unique or not.
      */
     public func append(_ key: String, elements: [LCType], unique: Bool) {
-        addOperation(unique ? .AddUnique : .Add, key, LCArray(elements))
+        addOperation(unique ? .addUnique : .add, key, LCArray(elements))
     }
 
     /**
@@ -467,7 +467,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter element: The element to remove.
      */
     public func remove(_ key: String, element: LCType) {
-        addOperation(.Remove, key, LCArray([element]))
+        addOperation(.remove, key, LCArray([element]))
     }
 
     /**
@@ -477,7 +477,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter elements: The array of elements to remove.
      */
     public func remove(_ key: String, elements: [LCType]) {
-        addOperation(.Remove, key, LCArray(elements))
+        addOperation(.remove, key, LCArray(elements))
     }
 
     /**
@@ -498,7 +498,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter object: The object to insert.
      */
     public func insertRelation(_ key: String, object: LCObject) {
-        addOperation(.AddRelation, key, LCArray([object]))
+        addOperation(.addRelation, key, LCArray([object]))
     }
 
     /**
@@ -508,7 +508,7 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
      - parameter object: The object to remove.
      */
     public func removeRelation(_ key: String, object: LCObject) {
-        addOperation(.RemoveRelation, key, LCArray([object]))
+        addOperation(.removeRelation, key, LCArray([object]))
     }
 
     /**

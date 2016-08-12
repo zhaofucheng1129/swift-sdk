@@ -27,7 +27,7 @@ public final class LCSMS {
 
         parameters["mobilePhoneNumber"] = mobilePhoneNumber
 
-        let response = RESTClient.request(.POST, "requestSmsCode", parameters: parameters)
+        let response = RESTClient.request(.post, "requestSmsCode", parameters: parameters)
 
         return LCBooleanResult(response: response)
     }
@@ -139,7 +139,7 @@ public final class LCSMS {
      */
     public static func verifyMobilePhoneNumber(_ mobilePhoneNumber: String, verificationCode: String) -> LCBooleanResult {
         let endpoint = "verifySmsCode/\(verificationCode)?mobilePhoneNumber=\(mobilePhoneNumber)"
-        let response = RESTClient.request(.POST, endpoint)
+        let response = RESTClient.request(.post, endpoint)
 
         return LCBooleanResult(response: response)
     }

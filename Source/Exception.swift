@@ -10,9 +10,9 @@ import Foundation
 
 class Exception {
     enum Name: String {
-        case InvalidType
-        case Inconsistency
-        case NotFound
+        case invalidType
+        case inconsistency
+        case notFound
     }
 
     static func raise(_ name: String, reason: String? = nil, userInfo: [NSObject: AnyObject]? = nil) {

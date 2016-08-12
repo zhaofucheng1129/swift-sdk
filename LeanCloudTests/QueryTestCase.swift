@@ -289,8 +289,8 @@ class QueryTestCase: BaseTestCase {
 
         /* Tip: At the equator, one degree of longitude and latitude is approximately equal to about 111 kilometers, or 70 miles. */
 
-        let from = LCGeoPoint.Distance(value: 0, unit: .Kilometer)
-        let to   = LCGeoPoint.Distance(value: 150, unit: .Kilometer)
+        let from = LCGeoPoint.Distance(value: 0, unit: .kilometer)
+        let to   = LCGeoPoint.Distance(value: 150, unit: .kilometer)
 
         query.whereKey("geoPointField", .nearbyPointWithRange(origin: LCGeoPoint(latitude: 44, longitude: -45), from: from, to: to))
         query.limit = 1

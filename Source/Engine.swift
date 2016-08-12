@@ -141,7 +141,7 @@ public final class LCEngine {
      - returns: The result of function call.
      */
     static func call(_ function: String, parameters: Parameters?) -> LCOptionalResult {
-        let response = RESTClient.request(.POST, "call/\(function)", parameters: parameters)
+        let response = RESTClient.request(.post, "call/\(function)", parameters: parameters)
 
         return response.optionalResult("result")
     }

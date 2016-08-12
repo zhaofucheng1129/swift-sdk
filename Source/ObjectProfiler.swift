@@ -262,7 +262,7 @@ class ObjectProfiler {
                 result.append(object)
             }
         case 1: /* Visiting */
-            Exception.raise(.Inconsistency, reason: "Circular reference.")
+            Exception.raise(.inconsistency, reason: "Circular reference.")
             break
         default: /* Visited */
             break
@@ -323,7 +323,7 @@ class ObjectProfiler {
             }
             visitStatusTable[key] = 2
         case 1: /* Visiting */
-            Exception.raise(.Inconsistency, reason: "Circular reference.")
+            Exception.raise(.inconsistency, reason: "Circular reference.")
             break
         default: /* Visited */
             break
@@ -399,17 +399,18 @@ class ObjectProfiler {
      */
     static func object(dictionary: [String: AnyObject], dataType: RESTClient.DataType) -> LCType? {
         switch dataType {
-        case .Object, .Pointer:
+        case .object,
+             .pointer:
             let className = dictionary["className"] as! String
 
             return object(dictionary: dictionary, className: className)
-        case .Relation:
+        case .relation:
             return LCRelation(dictionary: dictionary)
-        case .GeoPoint:
+        case .geoPoint:
             return LCGeoPoint(dictionary: dictionary)
-        case .Bytes:
+        case .bytes:
             return LCData(dictionary: dictionary)
-        case .Date:
+        case .date:
             return LCDate(dictionary: dictionary)
         }
     }

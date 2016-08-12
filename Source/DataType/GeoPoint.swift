@@ -18,9 +18,9 @@ public final class LCGeoPoint: NSObject, LCType, LCTypeExtension {
     public private(set) var longitude: Double = 0
 
     public enum Unit: String {
-        case Mile = "Miles"
-        case Kilometer = "Kilometers"
-        case Radian = "Radians"
+        case mile = "Miles"
+        case kilometer = "Kilometers"
+        case radian = "Radians"
     }
 
     public struct Distance {
@@ -50,7 +50,7 @@ public final class LCGeoPoint: NSObject, LCType, LCTypeExtension {
         guard let dataType = RESTClient.DataType(rawValue: type) else {
             return nil
         }
-        guard case dataType = RESTClient.DataType.GeoPoint else {
+        guard case dataType = RESTClient.DataType.geoPoint else {
             return nil
         }
         guard let latitude = dictionary["latitude"] as? Double else {

@@ -17,51 +17,51 @@ import Alamofire
 class RESTClient {
     /// HTTP Method.
     enum Method: String {
-        case GET
-        case POST
-        case PUT
-        case DELETE
+        case get
+        case post
+        case put
+        case delete
 
         /// Get Alamofire corresponding method
         var alamofireMethod: Alamofire.HTTPMethod {
             switch self {
-            case .GET:    return .get
-            case .POST:   return .post
-            case .PUT:    return .put
-            case .DELETE: return .delete
+            case .get:    return .get
+            case .post:   return .post
+            case .put:    return .put
+            case .delete: return .delete
             }
         }
     }
 
     /// Data type.
     enum DataType: String {
-        case Object   = "Object"
-        case Pointer  = "Pointer"
-        case Relation = "Relation"
-        case GeoPoint = "GeoPoint"
-        case Bytes    = "Bytes"
-        case Date     = "Date"
+        case object   = "Object"
+        case pointer  = "Pointer"
+        case relation = "Relation"
+        case geoPoint = "GeoPoint"
+        case bytes    = "Bytes"
+        case date     = "Date"
     }
 
     /// Reserved key.
     class ReservedKey {
-        static let Op         = "__op"
-        static let InternalId = "__internalId"
-        static let Children   = "__children"
+        static let op         = "__op"
+        static let internalId = "__internalId"
+        static let children   = "__children"
     }
 
     /// Header field name.
     class HeaderFieldName {
-        static let ID         = "X-LC-Id"
-        static let Signature  = "X-LC-Sign"
-        static let Session    = "X-LC-Session"
-        static let Production = "X-LC-Prod"
-        static let UserAgent  = "User-Agent"
-        static let Accept     = "Accept"
+        static let id         = "X-LC-Id"
+        static let signature  = "X-LC-Sign"
+        static let session    = "X-LC-Session"
+        static let production = "X-LC-Prod"
+        static let userAgent  = "User-Agent"
+        static let accept     = "Accept"
     }
 
     /// REST API version.
-    static let APIVersion = "1.1"
+    static let apiVersion = "1.1"
 
     /// Default timeout interval of each request.
     static let defaultTimeoutInterval: TimeInterval = 10
@@ -73,7 +73,7 @@ class RESTClient {
     static let dispatchQueue = DispatchQueue(label: "LeanCloud.REST", attributes: .concurrent)
 
     /// Shared request manager.
-    static var requestManager: Alamofire.SessionManager = {
+    static var sessionManager: Alamofire.SessionManager = {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = defaultTimeoutInterval
         return SessionManager(configuration: configuration)
@@ -93,14 +93,14 @@ class RESTClient {
     /// Common REST request headers.
     static var commonHeaders: [String: String] {
         var headers: [String: String] = [
-            HeaderFieldName.ID:        Configuration.sharedInstance.applicationID,
-            HeaderFieldName.Signature: self.signature,
-            HeaderFieldName.UserAgent: self.userAgent,
-            HeaderFieldName.Accept:    "application/json"
+            HeaderFieldName.id:        Configuration.sharedInstance.applicationID,
+            HeaderFieldName.signature: self.signature,
+            HeaderFieldName.userAgent: self.userAgent,
+            HeaderFieldName.accept:    "application/json"
         ]
 
         if let sessionToken = LCUser.current?.sessionToken {
-            headers[HeaderFieldName.Session] = sessionToken.value
+            headers[HeaderFieldName.session] = sessionToken.value
         }
 
         return headers
@@ -166,7 +166,7 @@ class RESTClient {
      - returns: An absolute REST API URL string.
      */
     static func absoluteURLString(_ endpoint: String) -> String {
-        return "https://\(self.host)/\(self.APIVersion)/\(endpoint)"
+        return "https://\(self.host)/\(self.apiVersion)/\(endpoint)"
     }
 
     /**
@@ -215,7 +215,7 @@ class RESTClient {
         default:   encoding = .json
         }
 
-        let request = requestManager.request(URLString, withMethod: method, parameters: parameters, encoding: encoding, headers: headers)
+        let request = sessionManager.request(URLString, withMethod: method, parameters: parameters, encoding: encoding, headers: headers)
 
         request.responseJSON(queue: dispatchQueue) { response in
             completionHandler(LCResponse(response))

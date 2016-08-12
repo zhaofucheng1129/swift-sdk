@@ -113,7 +113,7 @@ class Runtime {
                 result.append(aClass)
             }
         case 1: /* Visiting */
-            Exception.raise(.Inconsistency, reason: "Circular reference.")
+            Exception.raise(.inconsistency, reason: "Circular reference.")
             break
         default: /* Visited */
             break

@@ -287,7 +287,7 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
      */
     func validateClassName(_ query: LCQuery) {
         guard query.objectClassName == objectClassName else {
-            Exception.raise(.Inconsistency, reason: "Different class names.")
+            Exception.raise(.inconsistency, reason: "Different class names.")
             return
         }
     }
@@ -388,7 +388,7 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
      - returns: The result of the query request.
      */
     public func find<T: LCObject>() -> LCQueryResult<T> {
-        let response = RESTClient.request(.GET, endpoint, parameters: parameters)
+        let response = RESTClient.request(.get, endpoint, parameters: parameters)
 
         if let error = response.error {
             return .failure(error: error)
@@ -486,7 +486,7 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
         parameters["count"] = 1
         parameters["limit"] = 0
 
-        let response = RESTClient.request(.GET, endpoint, parameters: parameters)
+        let response = RESTClient.request(.get, endpoint, parameters: parameters)
         let result = LCCountResult(response: response)
 
         return result
