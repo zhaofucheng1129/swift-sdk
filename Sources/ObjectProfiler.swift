@@ -56,7 +56,7 @@ class ObjectProfiler {
      - parameter aClass:     The class of property list.
      */
     static func cache(properties: [objc_property_t], _ aClass: AnyClass) {
-        propertyListTable[UInt(ObjectIdentifier(aClass))] = properties
+        propertyListTable[UInt(bitPattern: ObjectIdentifier(aClass))] = properties
     }
 
     /**
@@ -248,7 +248,7 @@ class ObjectProfiler {
             return
         }
 
-        let key = UInt(ObjectIdentifier(object))
+        let key = UInt(bitPattern: ObjectIdentifier(object))
 
         switch visitStatusTable[key] ?? 0 {
         case 0: /* Unvisited */
@@ -313,7 +313,7 @@ class ObjectProfiler {
      - parameter visitStatusTable: The object visit status table.
      */
     private static func validateCircularReference(_ object: LCType, visitStatusTable: inout [UInt: Int]) {
-        let key = UInt(ObjectIdentifier(object))
+        let key = UInt(bitPattern: ObjectIdentifier(object))
 
         switch visitStatusTable[key] ?? 0 {
         case 0: /* Unvisited */

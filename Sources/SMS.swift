@@ -50,20 +50,6 @@ public final class LCSMS {
     }
 
     /**
-     Request a short message asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number where verification code will be sent to.
-     - parameter templateName:      The template name.
-     - parameter variables:         The variables used to substitute placeholders in template.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func requestShortMessage(mobilePhoneNumber: String, templateName: String, variables: [String: AnyObject]?, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestShortMessage(mobilePhoneNumber: mobilePhoneNumber, templateName: templateName, variables: variables) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Request a verification code.
 
      - parameter mobilePhoneNumber: The mobile phone number where verification code will be sent to.
@@ -90,21 +76,6 @@ public final class LCSMS {
     }
 
     /**
-     Request a verification code asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number where verification code will be sent to.
-     - parameter applicationName:   The application name. If absent, defaults to application name in web console.
-     - parameter operation:         The operation. If absent, defaults to "\u77ed\u4fe1\u9a8c\u8bc1".
-     - parameter timeToLive:        The time to live of short message, in minutes. Defaults to 10 minutes.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func requestVerificationCode(mobilePhoneNumber: String, applicationName: String? = nil, operation: String? = nil, timeToLive: UInt? = nil, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestVerificationCode(mobilePhoneNumber: mobilePhoneNumber) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Request a voice verification code.
 
      - parameter mobilePhoneNumber: The mobile phone number where verification code will be sent to.
@@ -115,18 +86,6 @@ public final class LCSMS {
         let parameters = ["smsType": "voice"]
 
         return requestShortMessage(mobilePhoneNumber: mobilePhoneNumber, parameters: parameters)
-    }
-
-    /**
-     Request a voice verification code asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number where verification code will be sent to.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func requestVoiceVerificationCode(mobilePhoneNumber: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestVoiceVerificationCode(mobilePhoneNumber: mobilePhoneNumber) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -142,18 +101,5 @@ public final class LCSMS {
         let response = RESTClient.request(.post, endpoint)
 
         return LCBooleanResult(response: response)
-    }
-
-    /**
-     Verify mobile phone number asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number which you want to verify.
-     - parameter verificationCode:  The verification code.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func verifyMobilePhoneNumber(_ mobilePhoneNumber: String, verificationCode: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.verifyMobilePhoneNumber(mobilePhoneNumber, verificationCode: verificationCode) }) { result in
-            completion(result)
-        }
     }
 }

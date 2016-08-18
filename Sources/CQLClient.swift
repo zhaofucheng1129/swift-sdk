@@ -54,19 +54,6 @@ public class LCCQLValue {
 public class LCCQLClient {
     static let endpoint = "cloudQuery"
 
-    /// The dispatch queue for asynchronous CQL execution task.
-    static let backgroundQueue = DispatchQueue(label: "LeanCloud.CQLClient", attributes: .concurrent)
-
-    /**
-     Asynchronize task into background queue.
-
-     - parameter task:       The task to be performed.
-     - parameter completion: The completion closure to be called on main thread after task finished.
-     */
-    static func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
-        Utility.asynchronize(task, backgroundQueue, completion)
-    }
-
     /**
      Assemble parameters for CQL execution.
 
@@ -98,18 +85,5 @@ public class LCCQLClient {
         let response   = RESTClient.request(.get, endpoint, parameters: parameters)
 
         return LCCQLResult(response: response)
-    }
-
-    /**
-     Execute CQL statement asynchronously.
-
-     - parameter CQL:        The CQL statement to be executed.
-     - parameter parameters: The parameters for placeholders in CQL statement.
-     - parameter completion: The completion callback closure.
-     */
-    public static func execute(_ CQL: String, parameters: [AnyObject] = [], completion: (result: LCCQLResult) -> Void) {
-        asynchronize({ execute(CQL, parameters: parameters) }) { result in
-            completion(result: result)
-        }
     }
 }

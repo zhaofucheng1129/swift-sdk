@@ -68,17 +68,6 @@ public class LCUser: LCObject {
     }
 
     /**
-     Sign up an user asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func signUp(_ completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.signUp() }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Log in with username and password.
      
      - parameter username: The username.
@@ -91,19 +80,6 @@ public class LCUser: LCObject {
             "username": username,
             "password": password
         ])
-    }
-
-    /**
-     Log in with username and password asynchronously.
-
-     - parameter username:   The username.
-     - parameter password:   The password.
-     - parameter completion: The completion callback closure.
-     */
-    public static func logIn<User: LCUser>(username: String, password: String, completion: (LCObjectResult<User>) -> Void) {
-        RESTClient.asynchronize({ self.logIn(username: username, password: password) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -122,19 +98,6 @@ public class LCUser: LCObject {
     }
 
     /**
-     Log in with mobile phone number and password asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number.
-     - parameter password:          The password.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func logIn<User: LCUser>(mobilePhoneNumber: String, password: String, completion: (LCObjectResult<User>) -> Void) {
-        RESTClient.asynchronize({ self.logIn(mobilePhoneNumber: mobilePhoneNumber, password: password) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Log in with mobile phone number and verification code.
 
      - parameter mobilePhoneNumber: The mobile phone number.
@@ -147,19 +110,6 @@ public class LCUser: LCObject {
             "mobilePhoneNumber": mobilePhoneNumber,
             "smsCode": verificationCode
         ])
-    }
-
-    /**
-     Log in with mobile phone number and verification code asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number.
-     - parameter verificationCode:  The verification code.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func logIn<User: LCUser>(mobilePhoneNumber: String, verificationCode: String, completion: (LCObjectResult<User>) -> Void) {
-        RESTClient.asynchronize({ self.logIn(mobilePhoneNumber: mobilePhoneNumber, verificationCode: verificationCode) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -180,18 +130,6 @@ public class LCUser: LCObject {
         }
 
         return result
-    }
-
-    /**
-     Log in with session token asynchronously.
-
-     - parameter sessionToken: The session token.
-     - parameter completion:   The completion callback closure.
-     */
-    public static func logIn<User: LCUser>(sessionToken: String, completion: (LCObjectResult<User>) -> Void) {
-        RESTClient.asynchronize({ self.logIn(sessionToken: sessionToken) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -234,19 +172,6 @@ public class LCUser: LCObject {
         }
 
         return result
-    }
-
-    /**
-     Sign up or log in with mobile phone number and verification code asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number.
-     - parameter verificationCode:  The verification code.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func signUpOrLogIn<User: LCUser>(mobilePhoneNumber: String, verificationCode: String, completion: (LCObjectResult<User>) -> Void) {
-        RESTClient.asynchronize({ self.signUpOrLogIn(mobilePhoneNumber: mobilePhoneNumber, verificationCode: verificationCode) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -295,18 +220,6 @@ public class LCUser: LCObject {
     }
 
     /**
-     Request to send a verification mail to specified email address asynchronously.
-
-     - parameter email:      The email address to where the mail will be sent.
-     - parameter completion: The completion callback closure.
-     */
-    public static func requestVerificationMail(email: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestVerificationMail(email: email) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Request to send a verification code to specified mobile phone number.
 
      - parameter mobilePhoneNumber: The mobile phone number where the verification code will be sent to.
@@ -317,18 +230,6 @@ public class LCUser: LCObject {
         let parameters = ["mobilePhoneNumber": mobilePhoneNumber]
         let response   = RESTClient.request(.post, "requestMobilePhoneVerify", parameters: parameters)
         return LCBooleanResult(response: response)
-    }
-
-    /**
-     Request to send a verification code to specified mobile phone number asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number where the verification code will be sent to.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func requestVerificationCode(mobilePhoneNumber: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestVerificationCode(mobilePhoneNumber: mobilePhoneNumber) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -346,19 +247,6 @@ public class LCUser: LCObject {
     }
 
     /**
-     Verify mobile phone number with code asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number.
-     - parameter verificationCode:  The verification code.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func verifyMobilePhoneNumber(_ mobilePhoneNumber: String, verificationCode: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.verifyMobilePhoneNumber(mobilePhoneNumber, verificationCode: verificationCode) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Request a verification code for login with mobile phone number.
 
      - parameter mobilePhoneNumber: The mobile phone number where the verification code will be sent to.
@@ -369,18 +257,6 @@ public class LCUser: LCObject {
         let parameters = ["mobilePhoneNumber": mobilePhoneNumber]
         let response = RESTClient.request(.post, "requestLoginSmsCode", parameters: parameters)
         return LCBooleanResult(response: response)
-    }
-
-    /**
-     Request a verification code for login with mobile phone number asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number where the verification code message will be sent to.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func requestLoginVerificationCode(mobilePhoneNumber: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestLoginVerificationCode(mobilePhoneNumber: mobilePhoneNumber) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -397,18 +273,6 @@ public class LCUser: LCObject {
     }
 
     /**
-     Request password reset email asynchronously.
-
-     - parameter email:      The email address where the password reset email will be sent to.
-     - parameter completion: The completion callback closure.
-     */
-    public static func requestPasswordReset(email: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestPasswordReset(email: email) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Request password reset verification code.
 
      - parameter mobilePhoneNumber: The mobile phone number where the password reset verification code will be sent to.
@@ -419,18 +283,6 @@ public class LCUser: LCObject {
         let parameters = ["mobilePhoneNumber": mobilePhoneNumber]
         let response   = RESTClient.request(.post, "requestPasswordResetBySmsCode", parameters: parameters)
         return LCBooleanResult(response: response)
-    }
-
-    /**
-     Request password reset verification code asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number where the password reset verification code will be sent to.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func requestPasswordReset(mobilePhoneNumber: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.requestPasswordReset(mobilePhoneNumber: mobilePhoneNumber) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -454,20 +306,6 @@ public class LCUser: LCObject {
         ]
         let response = RESTClient.request(.put, "resetPasswordBySmsCode/\(verificationCode)", parameters: parameters)
         return LCBooleanResult(response: response)
-    }
-
-    /**
-     Reset password with verification code and new password asynchronously.
-
-     - parameter mobilePhoneNumber: The mobile phone number of user.
-     - parameter verificationCode:  The verification code in password reset message.
-     - parameter newPassword:       The new password.
-     - parameter completion:        The completion callback closure.
-     */
-    public static func resetPassword(mobilePhoneNumber: String, verificationCode: String, newPassword: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.resetPassword(mobilePhoneNumber: mobilePhoneNumber, verificationCode: verificationCode, newPassword: newPassword) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -500,19 +338,6 @@ public class LCUser: LCObject {
                 ObjectProfiler.updateObject(self, dictionary)
             }
             return .success
-        }
-    }
-
-    /**
-     Update password for user asynchronously.
-
-     - parameter oldPassword: The old password.
-     - parameter newPassword: The new password.
-     - parameter completion:  The completion callback closure.
-     */
-    public func updatePassword(oldPassword: String, newPassword: String, completion: (LCBooleanResult) -> Void) {
-        RESTClient.asynchronize({ self.updatePassword(oldPassword: oldPassword, newPassword: newPassword) }) { result in
-            completion(result)
         }
     }
 }

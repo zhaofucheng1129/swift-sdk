@@ -156,9 +156,6 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
         throw LCError(code: .invalidType, reason: "Object cannot be differed.")
     }
 
-    /// The dispatch queue for network request task.
-    static let backgroundQueue = DispatchQueue(label: "LeanCloud.Object", attributes: .concurrent)
-
     /**
      Set class name of current type.
 
@@ -529,43 +526,12 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
     }
 
     /**
-     Asynchronize task into background queue.
-
-     - parameter task:       The task to be performed.
-     - parameter completion: The completion closure to be called on main thread after task finished.
-     */
-    func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
-        LCObject.asynchronize(task, completion: completion)
-    }
-
-    /**
-     Asynchronize task into background queue.
-
-     - parameter task:       The task to be performed.
-     - parameter completion: The completion closure to be called on main thread after task finished.
-     */
-    static func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
-        Utility.asynchronize(task, backgroundQueue, completion)
-    }
-
-    /**
      Save object and its all descendant objects synchronously.
 
      - returns: The result of saving request.
      */
     public func save() -> LCBooleanResult {
         return LCBooleanResult(response: ObjectUpdater.save(self))
-    }
-
-    /**
-     Save object and its all descendant objects asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func save(_ completion: (LCBooleanResult) -> Void) {
-        asynchronize({ self.save() }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -580,34 +546,12 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
     }
 
     /**
-     Delete a batch of objects in one request asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public static func delete(_ objects: [LCObject], completion: (LCBooleanResult) -> Void) {
-        asynchronize({ delete(objects) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Delete current object synchronously.
 
      - returns: The result of deletion request.
      */
     public func delete() -> LCBooleanResult {
         return LCBooleanResult(response: ObjectUpdater.delete(self))
-    }
-
-    /**
-     Delete current object asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func delete(_ completion: (LCBooleanResult) -> Void) {
-        asynchronize({ self.delete() }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -622,33 +566,11 @@ public class LCObject: NSObject, LCType, LCTypeExtension, Sequence {
     }
 
     /**
-     Fetch a batch of objects in one request asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public static func fetch(_ objects: [LCObject], completion: (LCBooleanResult) -> Void) {
-        asynchronize({ fetch(objects) }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Fetch object from server synchronously.
 
      - returns: The result of fetching request.
      */
     public func fetch() -> LCBooleanResult {
         return LCBooleanResult(response: ObjectUpdater.fetch(self))
-    }
-
-    /**
-     Fetch object from server asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func fetch(_ completion: (LCBooleanResult) -> Void) {
-        asynchronize({ self.fetch() }) { result in
-            completion(result)
-        }
     }
 }

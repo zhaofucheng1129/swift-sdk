@@ -94,7 +94,7 @@ class Runtime {
     }
 
     private static func toposortVisit(aClass: AnyClass, _ classes: [AnyClass], _ result: inout [AnyClass], _ visitStatusTable: inout [UInt: Int]) {
-        let key = UInt(ObjectIdentifier(aClass))
+        let key = UInt(bitPattern: ObjectIdentifier(aClass))
 
         switch visitStatusTable[key] ?? 0 {
         case 0: /* Unvisited */

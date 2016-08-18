@@ -129,3 +129,7 @@ extension Collection {
         return result
     }
 }
+
+func downcast(object: AnyObject) -> Any {
+    return object
+}

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Alamofire
+import Akara
 
 /**
  LeanCloud REST client.
@@ -21,16 +21,6 @@ class RESTClient {
         case post
         case put
         case delete
-
-        /// Get Alamofire corresponding method
-        var alamofireMethod: Alamofire.HTTPMethod {
-            switch self {
-            case .get:    return .get
-            case .post:   return .post
-            case .put:    return .put
-            case .delete: return .delete
-            }
-        }
     }
 
     /// Data type.
@@ -68,16 +58,6 @@ class RESTClient {
 
     /// REST client shared instance.
     static let sharedInstance = RESTClient()
-
-    /// Request dispatch queue.
-    static let dispatchQueue = DispatchQueue(label: "LeanCloud.REST", attributes: .concurrent)
-
-    /// Shared request manager.
-    static var sessionManager: Alamofire.SessionManager = {
-        let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = defaultTimeoutInterval
-        return SessionManager(configuration: configuration)
-    }()
 
     /// User agent of SDK.
     static let userAgent = "LeanCloud-Swift-SDK/\(Version)"
@@ -187,44 +167,6 @@ class RESTClient {
     }
 
     /**
-     Creates a request to REST API and sends it asynchronously.
-
-     - parameter method:            The HTTP Method.
-     - parameter endpoint:          The REST API endpoint.
-     - parameter parameters:        The request parameters.
-     - parameter headers:           The request headers.
-     - parameter completionHandler: The completion callback closure.
-
-     - returns: A request object.
-     */
-    static func request(
-        _ method: Method,
-        _ endpoint: String,
-        parameters: [String: AnyObject]? = nil,
-        headers: [String: String]? = nil,
-        completionHandler: (LCResponse) -> Void)
-        -> LCRequest
-    {
-        let method    = method.alamofireMethod
-        let URLString = absoluteURLString(endpoint)
-        let headers   = mergeCommonHeaders(headers)
-        var encoding: ParameterEncoding!
-
-        switch method {
-        case .get: encoding = .urlEncodedInURL
-        default:   encoding = .json
-        }
-
-        let request = sessionManager.request(URLString, withMethod: method, parameters: parameters, encoding: encoding, headers: headers)
-
-        request.responseJSON(queue: dispatchQueue) { response in
-            completionHandler(LCResponse(response))
-        }
-
-        return LCRequest(request)
-    }
-
-    /**
      Creates a request to REST API and sends it synchronously.
 
      - parameter method:     The HTTP Method.
@@ -242,26 +184,36 @@ class RESTClient {
         -> LCResponse
     {
         var result: LCResponse!
+        let urlString = absoluteURLString(endpoint)
+        let headers   = mergeCommonHeaders(headers)
+        var encoding: Akara.ParameterEncoding!
 
-        let semaphore = DispatchSemaphore(value: 0)
-
-        _ = request(method, endpoint, parameters: parameters, headers: headers) { response in
-            result = response
-            semaphore.signal()
+        switch method {
+        case .get: encoding = .urlEncodedInURL
+        default:   encoding = .json
         }
 
-        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        let request = Akara.Request(url: URL(string: urlString)!)
+
+        request.method  = method.rawValue
+        request.headers = headers
+
+        if let parameters = parameters {
+            let anyValue = parameters.mapValue { downcast(object: $0) }
+            request.addParameters(anyValue, encoding: encoding)
+        }
+
+        let akaraResult = Akara.perform(request)
+
+        switch akaraResult {
+        case .success(let response):
+            let data = response.body.data(using: String.Encoding.utf8)!
+            let value = try! JSONSerialization.jsonObject(with: data, options: [])
+            result = LCResponse(value)
+        case .failure(let error):
+            result = LCResponse(LCError(code: error.code, reason: error.message))
+        }
 
         return result
-    }
-
-    /**
-     Asynchronize task into request dispatch queue.
-
-     - parameter task:       The task to be asynchronized.
-     - parameter completion: The completion closure to be called on main thread after task finished.
-     */
-    static func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
-        Utility.asynchronize(task, dispatchQueue, completion)
     }
 }

@@ -91,9 +91,6 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
         return parameters
     }
 
-    /// The dispatch queue for network request task.
-    static let backgroundQueue = DispatchQueue(label: "LeanCloud.Query", attributes: .concurrent)
-
     /**
      Constraint for key.
      */
@@ -373,16 +370,6 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
     }
 
     /**
-     Asynchronize task into background queue.
-
-     - parameter task:       The task to be performed.
-     - parameter completion: The completion closure to be called on main thread after task finished.
-     */
-    static func asynchronize<Result>(_ task: () -> Result, completion: (Result) -> Void) {
-        Utility.asynchronize(task, backgroundQueue, completion)
-    }
-
-    /**
      Query objects synchronously.
 
      - returns: The result of the query request.
@@ -397,17 +384,6 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
             let objects: [T] = processResults(response.results, className: className)
 
             return .success(objects: objects)
-        }
-    }
-
-    /**
-     Query objects asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func find<T: LCObject>(_ completion: (LCQueryResult<T>) -> Void) {
-        LCQuery.asynchronize({ self.find() }) { result in
-            completion(result)
         }
     }
 
@@ -438,17 +414,6 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
     }
 
     /**
-     Get first object of query asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func getFirst<T: LCObject>(_ completion: (LCObjectResult<T>) -> Void) {
-        LCQuery.asynchronize({ self.getFirst() }) { result in
-            completion(result)
-        }
-    }
-
-    /**
      Get object by object ID synchronously.
 
      - parameter objectId: The object ID.
@@ -461,18 +426,6 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
         query.whereKey("objectId", .equalTo(LCString(objectId)))
 
         return query.getFirst()
-    }
-
-    /**
-     Get object by object ID asynchronously.
-
-     - parameter objectId:   The object ID.
-     - parameter completion: The completion callback closure.
-     */
-    public func get<T: LCObject>(_ objectId: String, completion: (LCObjectResult<T>) -> Void) {
-        LCQuery.asynchronize({ self.get(objectId) }) { result in
-            completion(result)
-        }
     }
 
     /**
@@ -490,16 +443,5 @@ final public class LCQuery: NSObject, NSCopying, NSCoding {
         let result = LCCountResult(response: response)
 
         return result
-    }
-
-    /**
-     Count objects asynchronously.
-
-     - parameter completion: The completion callback closure.
-     */
-    public func count(_ completion: (LCCountResult) -> Void) {
-        LCQuery.asynchronize({ self.count() }) { result in
-            completion(result)
-        }
     }
 }

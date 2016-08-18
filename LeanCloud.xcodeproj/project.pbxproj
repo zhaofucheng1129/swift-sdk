@@ -7,51 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		830046EA1C7C92B8004C88A7 /* ObjectProfiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830046E91C7C92B8004C88A7 /* ObjectProfiler.swift */; };
-		830B0F631C7C127700D9FC41 /* LeanCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830B0F621C7C127700D9FC41 /* LeanCloud.swift */; };
-		830B0F651C7C20CE00D9FC41 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830B0F641C7C20CE00D9FC41 /* Configuration.swift */; };
-		830B0F6C1C7C60DA00D9FC41 /* Runtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830B0F6B1C7C60DA00D9FC41 /* Runtime.swift */; };
-		8316B5391CFC73920076BCA7 /* CQLClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8316B5381CFC73920076BCA7 /* CQLClient.swift */; };
 		8334561C1CE589E500D42725 /* EngineTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334561B1CE589E500D42725 /* EngineTestCase.swift */; };
 		8342FCC61C7B13A700C3CF15 /* LeanCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8342FCBB1C7B13A700C3CF15 /* LeanCloud.framework */; };
 		8342FCCB1C7B13A700C3CF15 /* BaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8342FCCA1C7B13A700C3CF15 /* BaseTestCase.swift */; };
-		8343EF281CA91E5B0023D0CA /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8343EF271CA91E5B0023D0CA /* Response.swift */; };
-		83451E201CABB63600A378D7 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83451E1F1CABB63600A378D7 /* Request.swift */; };
-		83451E431CAC23E900A378D7 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83451E421CAC23E900A378D7 /* MD5.swift */; };
-		83451E491CAD0E2300A378D7 /* ObjectUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83451E481CAD0E2300A378D7 /* ObjectUpdater.swift */; };
-		83451E9F1CAEBA3000A378D7 /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83451E9E1CAEBA3000A378D7 /* GeoPoint.swift */; };
-		83451EA81CAEBA8900A378D7 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83451EA71CAEBA8900A378D7 /* Data.swift */; };
-		83451EAA1CAEBA9600A378D7 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83451EA91CAEBA9600A378D7 /* Date.swift */; };
-		834E59C21C7ED06A009762AC /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834E59C11C7ED06A009762AC /* Operation.swift */; };
 		834EA7151D2A139A00108DDC /* UserTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834EA7141D2A139A00108DDC /* UserTestCase.swift */; };
 		8352B5231D2BAAE600531785 /* RelationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352B5221D2BAAE600531785 /* RelationTestCase.swift */; };
-		835F52EB1CCBC0D7008EE3AC /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835F52EA1CCBC0D7008EE3AC /* Null.swift */; };
-		835F53011CCF0CF5008EE3AC /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835F53001CCF0CF5008EE3AC /* Result.swift */; };
-		835F530A1CCF1620008EE3AC /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835F53091CCF1620008EE3AC /* Error.swift */; };
-		836459C31CDE377800AD98A5 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836459C21CDE377800AD98A5 /* Role.swift */; };
-		83724CCA1C7B54A700E59BED /* LeanCloud.h in Headers */ = {isa = PBXBuildFile; fileRef = 83724CC91C7B54A700E59BED /* LeanCloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8374CCB11D3146F500844316 /* SMS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8374CCB01D3146F500844316 /* SMS.swift */; };
-		837753541CA3D9D300C2053D /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837753531CA3D9D300C2053D /* Extension.swift */; };
-		837753561CA3DB8B00C2053D /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837753551CA3DB8B00C2053D /* Relation.swift */; };
-		837753581CA4CB0300C2053D /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837753571CA4CB0300C2053D /* Utility.swift */; };
-		837E05001CABAAB4008CC3FF /* RESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837E04FF1CABAAB4008CC3FF /* RESTClient.swift */; };
-		838B32F41CE1F1AC00CAEBF8 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B32F31CE1F1AC00CAEBF8 /* Engine.swift */; };
-		839A8B961CDDACD400840831 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8B951CDDACD400840831 /* User.swift */; };
-		83A566DC1CA1414700E2EB12 /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A566DB1CA1414700E2EB12 /* BatchRequest.swift */; };
-		83ACD25C1C8197BE00F7E2DE /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD25B1C8197BE00F7E2DE /* Object.swift */; };
-		83ACD2681C819D3B00F7E2DE /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD2671C819D3B00F7E2DE /* Number.swift */; };
-		83ACD26A1C819D5A00F7E2DE /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD2691C819D5A00F7E2DE /* Bool.swift */; };
-		83ACD26C1C819D6900F7E2DE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD26B1C819D6900F7E2DE /* String.swift */; };
-		83ACD26E1C819D8000F7E2DE /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD26D1C819D8000F7E2DE /* Array.swift */; };
-		83ACD2701C819DA400F7E2DE /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD26F1C819DA400F7E2DE /* Dictionary.swift */; };
-		83BC11CD1CDD768500D7E7A6 /* ACL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BC11CC1CDD768500D7E7A6 /* ACL.swift */; };
+		83653F8A1D64B0C0000CCCBD /* ACL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F671D64B0C0000CCCBD /* ACL.swift */; };
+		83653F8B1D64B0C0000CCCBD /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F681D64B0C0000CCCBD /* Array.swift */; };
+		83653F8C1D64B0C0000CCCBD /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F691D64B0C0000CCCBD /* BatchRequest.swift */; };
+		83653F8D1D64B0C0000CCCBD /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F6A1D64B0C0000CCCBD /* Bool.swift */; };
+		83653F8E1D64B0C0000CCCBD /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F6B1D64B0C0000CCCBD /* Configuration.swift */; };
+		83653F8F1D64B0C0000CCCBD /* CQLClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F6C1D64B0C0000CCCBD /* CQLClient.swift */; };
+		83653F901D64B0C0000CCCBD /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F6D1D64B0C0000CCCBD /* Data.swift */; };
+		83653F911D64B0C0000CCCBD /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F6E1D64B0C0000CCCBD /* Date.swift */; };
+		83653F921D64B0C0000CCCBD /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F6F1D64B0C0000CCCBD /* Dictionary.swift */; };
+		83653F931D64B0C0000CCCBD /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F701D64B0C0000CCCBD /* Engine.swift */; };
+		83653F941D64B0C0000CCCBD /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F711D64B0C0000CCCBD /* Error.swift */; };
+		83653F951D64B0C0000CCCBD /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F721D64B0C0000CCCBD /* Exception.swift */; };
+		83653F961D64B0C0000CCCBD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F731D64B0C0000CCCBD /* Extension.swift */; };
+		83653F971D64B0C0000CCCBD /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F741D64B0C0000CCCBD /* GeoPoint.swift */; };
+		83653F991D64B0C0000CCCBD /* LeanCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F761D64B0C0000CCCBD /* LeanCloud.swift */; };
+		83653F9A1D64B0C0000CCCBD /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F771D64B0C0000CCCBD /* MD5.swift */; };
+		83653F9B1D64B0C0000CCCBD /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F781D64B0C0000CCCBD /* Null.swift */; };
+		83653F9C1D64B0C1000CCCBD /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F791D64B0C0000CCCBD /* Number.swift */; };
+		83653F9D1D64B0C1000CCCBD /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F7A1D64B0C0000CCCBD /* Object.swift */; };
+		83653F9E1D64B0C1000CCCBD /* ObjectProfiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F7B1D64B0C0000CCCBD /* ObjectProfiler.swift */; };
+		83653F9F1D64B0C1000CCCBD /* ObjectUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F7C1D64B0C0000CCCBD /* ObjectUpdater.swift */; };
+		83653FA01D64B0C1000CCCBD /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F7D1D64B0C0000CCCBD /* Operation.swift */; };
+		83653FA11D64B0C1000CCCBD /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F7E1D64B0C0000CCCBD /* Query.swift */; };
+		83653FA21D64B0C1000CCCBD /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F7F1D64B0C0000CCCBD /* Relation.swift */; };
+		83653FA31D64B0C1000CCCBD /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F801D64B0C0000CCCBD /* Response.swift */; };
+		83653FA41D64B0C1000CCCBD /* RESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F811D64B0C0000CCCBD /* RESTClient.swift */; };
+		83653FA51D64B0C1000CCCBD /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F821D64B0C0000CCCBD /* Result.swift */; };
+		83653FA61D64B0C1000CCCBD /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F831D64B0C0000CCCBD /* Role.swift */; };
+		83653FA71D64B0C1000CCCBD /* Runtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F841D64B0C0000CCCBD /* Runtime.swift */; };
+		83653FA81D64B0C1000CCCBD /* SMS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F851D64B0C0000CCCBD /* SMS.swift */; };
+		83653FA91D64B0C1000CCCBD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F861D64B0C0000CCCBD /* String.swift */; };
+		83653FAA1D64B0C1000CCCBD /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F871D64B0C0000CCCBD /* Type.swift */; };
+		83653FAB1D64B0C1000CCCBD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F881D64B0C0000CCCBD /* User.swift */; };
+		83653FAC1D64B0C1000CCCBD /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83653F891D64B0C0000CCCBD /* Utility.swift */; };
+		83653FB01D64B185000CCCBD /* LeanCloud.h in Headers */ = {isa = PBXBuildFile; fileRef = 83653FAF1D64B185000CCCBD /* LeanCloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83BC11D61CDD76E900D7E7A6 /* ACLTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BC11D51CDD76E900D7E7A6 /* ACLTestCase.swift */; };
-		83C575631D59C4B6003BEBF4 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C575621D59C4B6003BEBF4 /* Type.swift */; };
 		83D0DE6F1CC7B3FF00FC204E /* QueryTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D0DE6E1CC7B3FF00FC204E /* QueryTestCase.swift */; };
-		83D592311CD8871E007177C5 /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D592301CD8871E007177C5 /* Exception.swift */; };
 		83D5923C1CD887CE007177C5 /* XCTestCase+Exception.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D5923B1CD887CE007177C5 /* XCTestCase+Exception.m */; };
 		83FAF0931CC4D1E400A84063 /* ObjectTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FAF0921CC4D1E400A84063 /* ObjectTestCase.swift */; };
-		83FAF09E1CC5D85B00A84063 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FAF09D1CC5D85B00A84063 /* Query.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,56 +64,55 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		830046E91C7C92B8004C88A7 /* ObjectProfiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectProfiler.swift; sourceTree = "<group>"; };
-		830B0F621C7C127700D9FC41 /* LeanCloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeanCloud.swift; sourceTree = "<group>"; };
-		830B0F641C7C20CE00D9FC41 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		830B0F6B1C7C60DA00D9FC41 /* Runtime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runtime.swift; sourceTree = "<group>"; };
-		8316B5381CFC73920076BCA7 /* CQLClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CQLClient.swift; sourceTree = "<group>"; };
 		8334561B1CE589E500D42725 /* EngineTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngineTestCase.swift; sourceTree = "<group>"; };
 		8342FCBB1C7B13A700C3CF15 /* LeanCloud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LeanCloud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8342FCC01C7B13A700C3CF15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8342FCC51C7B13A700C3CF15 /* LeanCloudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanCloudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8342FCCA1C7B13A700C3CF15 /* BaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTestCase.swift; sourceTree = "<group>"; };
 		8342FCCC1C7B13A700C3CF15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8343EF271CA91E5B0023D0CA /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		83451E1F1CABB63600A378D7 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		83451E421CAC23E900A378D7 /* MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
-		83451E481CAD0E2300A378D7 /* ObjectUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectUpdater.swift; sourceTree = "<group>"; };
-		83451E9E1CAEBA3000A378D7 /* GeoPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
-		83451EA71CAEBA8900A378D7 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
-		83451EA91CAEBA9600A378D7 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		834E59C11C7ED06A009762AC /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		834EA7141D2A139A00108DDC /* UserTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTestCase.swift; sourceTree = "<group>"; };
 		8352B5221D2BAAE600531785 /* RelationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationTestCase.swift; sourceTree = "<group>"; };
-		835F52EA1CCBC0D7008EE3AC /* Null.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Null.swift; sourceTree = "<group>"; };
-		835F53001CCF0CF5008EE3AC /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		835F53091CCF1620008EE3AC /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
-		836459C21CDE377800AD98A5 /* Role.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
-		83724CC91C7B54A700E59BED /* LeanCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeanCloud.h; sourceTree = "<group>"; };
-		8374CCB01D3146F500844316 /* SMS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMS.swift; sourceTree = "<group>"; };
-		837753531CA3D9D300C2053D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		837753551CA3DB8B00C2053D /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
-		837753571CA4CB0300C2053D /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
-		837E04FF1CABAAB4008CC3FF /* RESTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESTClient.swift; sourceTree = "<group>"; };
-		838B32F31CE1F1AC00CAEBF8 /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
-		839A8B951CDDACD400840831 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		83A566DB1CA1414700E2EB12 /* BatchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchRequest.swift; sourceTree = "<group>"; };
-		83ACD25B1C8197BE00F7E2DE /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
-		83ACD2671C819D3B00F7E2DE /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
-		83ACD2691C819D5A00F7E2DE /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
-		83ACD26B1C819D6900F7E2DE /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		83ACD26D1C819D8000F7E2DE /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
-		83ACD26F1C819DA400F7E2DE /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
-		83BC11CC1CDD768500D7E7A6 /* ACL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACL.swift; sourceTree = "<group>"; };
+		83653F671D64B0C0000CCCBD /* ACL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACL.swift; sourceTree = "<group>"; };
+		83653F681D64B0C0000CCCBD /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		83653F691D64B0C0000CCCBD /* BatchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchRequest.swift; sourceTree = "<group>"; };
+		83653F6A1D64B0C0000CCCBD /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
+		83653F6B1D64B0C0000CCCBD /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		83653F6C1D64B0C0000CCCBD /* CQLClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CQLClient.swift; sourceTree = "<group>"; };
+		83653F6D1D64B0C0000CCCBD /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		83653F6E1D64B0C0000CCCBD /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		83653F6F1D64B0C0000CCCBD /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		83653F701D64B0C0000CCCBD /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		83653F711D64B0C0000CCCBD /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		83653F721D64B0C0000CCCBD /* Exception.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exception.swift; sourceTree = "<group>"; };
+		83653F731D64B0C0000CCCBD /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		83653F741D64B0C0000CCCBD /* GeoPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
+		83653F761D64B0C0000CCCBD /* LeanCloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeanCloud.swift; sourceTree = "<group>"; };
+		83653F771D64B0C0000CCCBD /* MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
+		83653F781D64B0C0000CCCBD /* Null.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Null.swift; sourceTree = "<group>"; };
+		83653F791D64B0C0000CCCBD /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
+		83653F7A1D64B0C0000CCCBD /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		83653F7B1D64B0C0000CCCBD /* ObjectProfiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectProfiler.swift; sourceTree = "<group>"; };
+		83653F7C1D64B0C0000CCCBD /* ObjectUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectUpdater.swift; sourceTree = "<group>"; };
+		83653F7D1D64B0C0000CCCBD /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		83653F7E1D64B0C0000CCCBD /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		83653F7F1D64B0C0000CCCBD /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
+		83653F801D64B0C0000CCCBD /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		83653F811D64B0C0000CCCBD /* RESTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESTClient.swift; sourceTree = "<group>"; };
+		83653F821D64B0C0000CCCBD /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		83653F831D64B0C0000CCCBD /* Role.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
+		83653F841D64B0C0000CCCBD /* Runtime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runtime.swift; sourceTree = "<group>"; };
+		83653F851D64B0C0000CCCBD /* SMS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMS.swift; sourceTree = "<group>"; };
+		83653F861D64B0C0000CCCBD /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		83653F871D64B0C0000CCCBD /* Type.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
+		83653F881D64B0C0000CCCBD /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		83653F891D64B0C0000CCCBD /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		83653FAF1D64B185000CCCBD /* LeanCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeanCloud.h; sourceTree = "<group>"; };
 		83BC11D51CDD76E900D7E7A6 /* ACLTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACLTestCase.swift; sourceTree = "<group>"; };
-		83C575621D59C4B6003BEBF4 /* Type.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
 		83D0DE6E1CC7B3FF00FC204E /* QueryTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryTestCase.swift; sourceTree = "<group>"; };
-		83D592301CD8871E007177C5 /* Exception.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exception.swift; sourceTree = "<group>"; };
 		83D5923A1CD887CE007177C5 /* XCTestCase+Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+Exception.h"; sourceTree = "<group>"; };
 		83D5923B1CD887CE007177C5 /* XCTestCase+Exception.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+Exception.m"; sourceTree = "<group>"; };
 		83D5923D1CD88846007177C5 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		83FAF0921CC4D1E400A84063 /* ObjectTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectTestCase.swift; sourceTree = "<group>"; };
-		83FAF09D1CC5D85B00A84063 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +137,7 @@
 		8342FCB11C7B13A600C3CF15 = {
 			isa = PBXGroup;
 			children = (
-				83724CC61C7B547000E59BED /* Source */,
+				83653F661D64B0C0000CCCBD /* Sources */,
 				8342FCBD1C7B13A700C3CF15 /* LeanCloud */,
 				8342FCC91C7B13A700C3CF15 /* LeanCloudTests */,
 				8342FCBC1C7B13A700C3CF15 /* Products */,
@@ -180,63 +178,46 @@
 			path = LeanCloudTests;
 			sourceTree = "<group>";
 		};
-		83451E3A1CAC23D100A378D7 /* Library */ = {
+		83653F661D64B0C0000CCCBD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				83451E421CAC23E900A378D7 /* MD5.swift */,
+				83653FAF1D64B185000CCCBD /* LeanCloud.h */,
+				83653F671D64B0C0000CCCBD /* ACL.swift */,
+				83653F681D64B0C0000CCCBD /* Array.swift */,
+				83653F691D64B0C0000CCCBD /* BatchRequest.swift */,
+				83653F6A1D64B0C0000CCCBD /* Bool.swift */,
+				83653F6B1D64B0C0000CCCBD /* Configuration.swift */,
+				83653F6C1D64B0C0000CCCBD /* CQLClient.swift */,
+				83653F6D1D64B0C0000CCCBD /* Data.swift */,
+				83653F6E1D64B0C0000CCCBD /* Date.swift */,
+				83653F6F1D64B0C0000CCCBD /* Dictionary.swift */,
+				83653F701D64B0C0000CCCBD /* Engine.swift */,
+				83653F711D64B0C0000CCCBD /* Error.swift */,
+				83653F721D64B0C0000CCCBD /* Exception.swift */,
+				83653F731D64B0C0000CCCBD /* Extension.swift */,
+				83653F741D64B0C0000CCCBD /* GeoPoint.swift */,
+				83653F761D64B0C0000CCCBD /* LeanCloud.swift */,
+				83653F771D64B0C0000CCCBD /* MD5.swift */,
+				83653F781D64B0C0000CCCBD /* Null.swift */,
+				83653F791D64B0C0000CCCBD /* Number.swift */,
+				83653F7A1D64B0C0000CCCBD /* Object.swift */,
+				83653F7B1D64B0C0000CCCBD /* ObjectProfiler.swift */,
+				83653F7C1D64B0C0000CCCBD /* ObjectUpdater.swift */,
+				83653F7D1D64B0C0000CCCBD /* Operation.swift */,
+				83653F7E1D64B0C0000CCCBD /* Query.swift */,
+				83653F7F1D64B0C0000CCCBD /* Relation.swift */,
+				83653F801D64B0C0000CCCBD /* Response.swift */,
+				83653F811D64B0C0000CCCBD /* RESTClient.swift */,
+				83653F821D64B0C0000CCCBD /* Result.swift */,
+				83653F831D64B0C0000CCCBD /* Role.swift */,
+				83653F841D64B0C0000CCCBD /* Runtime.swift */,
+				83653F851D64B0C0000CCCBD /* SMS.swift */,
+				83653F861D64B0C0000CCCBD /* String.swift */,
+				83653F871D64B0C0000CCCBD /* Type.swift */,
+				83653F881D64B0C0000CCCBD /* User.swift */,
+				83653F891D64B0C0000CCCBD /* Utility.swift */,
 			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		83724CC61C7B547000E59BED /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				83451E3A1CAC23D100A378D7 /* Library */,
-				83ACD25A1C8197BE00F7E2DE /* DataType */,
-				83724CC91C7B54A700E59BED /* LeanCloud.h */,
-				830B0F621C7C127700D9FC41 /* LeanCloud.swift */,
-				83C575621D59C4B6003BEBF4 /* Type.swift */,
-				837753571CA4CB0300C2053D /* Utility.swift */,
-				837753531CA3D9D300C2053D /* Extension.swift */,
-				830B0F641C7C20CE00D9FC41 /* Configuration.swift */,
-				830046E91C7C92B8004C88A7 /* ObjectProfiler.swift */,
-				83451E481CAD0E2300A378D7 /* ObjectUpdater.swift */,
-				834E59C11C7ED06A009762AC /* Operation.swift */,
-				837E04FF1CABAAB4008CC3FF /* RESTClient.swift */,
-				83A566DB1CA1414700E2EB12 /* BatchRequest.swift */,
-				83451E1F1CABB63600A378D7 /* Request.swift */,
-				8343EF271CA91E5B0023D0CA /* Response.swift */,
-				835F53001CCF0CF5008EE3AC /* Result.swift */,
-				83D592301CD8871E007177C5 /* Exception.swift */,
-				835F53091CCF1620008EE3AC /* Error.swift */,
-				830B0F6B1C7C60DA00D9FC41 /* Runtime.swift */,
-				83FAF09D1CC5D85B00A84063 /* Query.swift */,
-				8316B5381CFC73920076BCA7 /* CQLClient.swift */,
-				838B32F31CE1F1AC00CAEBF8 /* Engine.swift */,
-				8374CCB01D3146F500844316 /* SMS.swift */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		83ACD25A1C8197BE00F7E2DE /* DataType */ = {
-			isa = PBXGroup;
-			children = (
-				835F52EA1CCBC0D7008EE3AC /* Null.swift */,
-				83ACD2671C819D3B00F7E2DE /* Number.swift */,
-				83ACD2691C819D5A00F7E2DE /* Bool.swift */,
-				83ACD26B1C819D6900F7E2DE /* String.swift */,
-				83ACD26D1C819D8000F7E2DE /* Array.swift */,
-				83ACD26F1C819DA400F7E2DE /* Dictionary.swift */,
-				83ACD25B1C8197BE00F7E2DE /* Object.swift */,
-				837753551CA3DB8B00C2053D /* Relation.swift */,
-				83451E9E1CAEBA3000A378D7 /* GeoPoint.swift */,
-				83451EA71CAEBA8900A378D7 /* Data.swift */,
-				83451EA91CAEBA9600A378D7 /* Date.swift */,
-				839A8B951CDDACD400840831 /* User.swift */,
-				836459C21CDE377800AD98A5 /* Role.swift */,
-				83BC11CC1CDD768500D7E7A6 /* ACL.swift */,
-			);
-			path = DataType;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		83D592391CD887CE007177C5 /* Exception */ = {
@@ -255,7 +236,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83724CCA1C7B54A700E59BED /* LeanCloud.h in Headers */,
+				83653FB01D64B185000CCCBD /* LeanCloud.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,41 +339,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				837753561CA3DB8B00C2053D /* Relation.swift in Sources */,
-				83451E9F1CAEBA3000A378D7 /* GeoPoint.swift in Sources */,
-				83ACD26A1C819D5A00F7E2DE /* Bool.swift in Sources */,
-				830B0F6C1C7C60DA00D9FC41 /* Runtime.swift in Sources */,
-				8343EF281CA91E5B0023D0CA /* Response.swift in Sources */,
-				83451EA81CAEBA8900A378D7 /* Data.swift in Sources */,
-				830B0F651C7C20CE00D9FC41 /* Configuration.swift in Sources */,
-				83451E431CAC23E900A378D7 /* MD5.swift in Sources */,
-				834E59C21C7ED06A009762AC /* Operation.swift in Sources */,
-				830046EA1C7C92B8004C88A7 /* ObjectProfiler.swift in Sources */,
-				83BC11CD1CDD768500D7E7A6 /* ACL.swift in Sources */,
-				83ACD25C1C8197BE00F7E2DE /* Object.swift in Sources */,
-				830B0F631C7C127700D9FC41 /* LeanCloud.swift in Sources */,
-				83ACD2701C819DA400F7E2DE /* Dictionary.swift in Sources */,
-				836459C31CDE377800AD98A5 /* Role.swift in Sources */,
-				83451E491CAD0E2300A378D7 /* ObjectUpdater.swift in Sources */,
-				837753541CA3D9D300C2053D /* Extension.swift in Sources */,
-				8374CCB11D3146F500844316 /* SMS.swift in Sources */,
-				83451E201CABB63600A378D7 /* Request.swift in Sources */,
-				83ACD26E1C819D8000F7E2DE /* Array.swift in Sources */,
-				835F53011CCF0CF5008EE3AC /* Result.swift in Sources */,
-				837753581CA4CB0300C2053D /* Utility.swift in Sources */,
-				839A8B961CDDACD400840831 /* User.swift in Sources */,
-				8316B5391CFC73920076BCA7 /* CQLClient.swift in Sources */,
-				83D592311CD8871E007177C5 /* Exception.swift in Sources */,
-				83C575631D59C4B6003BEBF4 /* Type.swift in Sources */,
-				835F530A1CCF1620008EE3AC /* Error.swift in Sources */,
-				83FAF09E1CC5D85B00A84063 /* Query.swift in Sources */,
-				838B32F41CE1F1AC00CAEBF8 /* Engine.swift in Sources */,
-				83A566DC1CA1414700E2EB12 /* BatchRequest.swift in Sources */,
-				83451EAA1CAEBA9600A378D7 /* Date.swift in Sources */,
-				83ACD2681C819D3B00F7E2DE /* Number.swift in Sources */,
-				837E05001CABAAB4008CC3FF /* RESTClient.swift in Sources */,
-				83ACD26C1C819D6900F7E2DE /* String.swift in Sources */,
-				835F52EB1CCBC0D7008EE3AC /* Null.swift in Sources */,
+				83653FA51D64B0C1000CCCBD /* Result.swift in Sources */,
+				83653F901D64B0C0000CCCBD /* Data.swift in Sources */,
+				83653F8A1D64B0C0000CCCBD /* ACL.swift in Sources */,
+				83653F9C1D64B0C1000CCCBD /* Number.swift in Sources */,
+				83653FA91D64B0C1000CCCBD /* String.swift in Sources */,
+				83653F8E1D64B0C0000CCCBD /* Configuration.swift in Sources */,
+				83653F9B1D64B0C0000CCCBD /* Null.swift in Sources */,
+				83653FAA1D64B0C1000CCCBD /* Type.swift in Sources */,
+				83653F991D64B0C0000CCCBD /* LeanCloud.swift in Sources */,
+				83653F941D64B0C0000CCCBD /* Error.swift in Sources */,
+				83653FA21D64B0C1000CCCBD /* Relation.swift in Sources */,
+				83653F971D64B0C0000CCCBD /* GeoPoint.swift in Sources */,
+				83653F911D64B0C0000CCCBD /* Date.swift in Sources */,
+				83653F9D1D64B0C1000CCCBD /* Object.swift in Sources */,
+				83653F8D1D64B0C0000CCCBD /* Bool.swift in Sources */,
+				83653FA41D64B0C1000CCCBD /* RESTClient.swift in Sources */,
+				83653FAC1D64B0C1000CCCBD /* Utility.swift in Sources */,
+				83653FA01D64B0C1000CCCBD /* Operation.swift in Sources */,
+				83653FA61D64B0C1000CCCBD /* Role.swift in Sources */,
+				83653F921D64B0C0000CCCBD /* Dictionary.swift in Sources */,
+				83653F9F1D64B0C1000CCCBD /* ObjectUpdater.swift in Sources */,
+				83653F8C1D64B0C0000CCCBD /* BatchRequest.swift in Sources */,
+				83653F9E1D64B0C1000CCCBD /* ObjectProfiler.swift in Sources */,
+				83653FA11D64B0C1000CCCBD /* Query.swift in Sources */,
+				83653FA81D64B0C1000CCCBD /* SMS.swift in Sources */,
+				83653FA71D64B0C1000CCCBD /* Runtime.swift in Sources */,
+				83653F9A1D64B0C0000CCCBD /* MD5.swift in Sources */,
+				83653F8B1D64B0C0000CCCBD /* Array.swift in Sources */,
+				83653F961D64B0C0000CCCBD /* Extension.swift in Sources */,
+				83653F951D64B0C0000CCCBD /* Exception.swift in Sources */,
+				83653F8F1D64B0C0000CCCBD /* CQLClient.swift in Sources */,
+				83653F931D64B0C0000CCCBD /* Engine.swift in Sources */,
+				83653FA31D64B0C1000CCCBD /* Response.swift in Sources */,
+				83653FAB1D64B0C1000CCCBD /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

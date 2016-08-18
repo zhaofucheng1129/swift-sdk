@@ -7,13 +7,13 @@
 //
 
 import Foundation
-import Alamofire
 
 public class LCResponse {
     /// Internal error.
-    /// It will override alamofire's response error.
     private var internalError: LCError?
-    private var alamofireResponse: Alamofire.Response<AnyObject, NSError>?
+
+    /// Internal value.
+    private var internalValue: AnyObject?
 
     init() {}
 
@@ -21,12 +21,12 @@ public class LCResponse {
         internalError = error
     }
 
-    init(_ alamofireResponse: Alamofire.Response<AnyObject, NSError>) {
-        self.alamofireResponse = alamofireResponse
+    init(_ value: AnyObject) {
+        internalValue = value
     }
 
     var value: AnyObject? {
-        return alamofireResponse?.result.value
+        return internalValue
     }
 
     var error: LCError? {
@@ -39,12 +39,8 @@ public class LCResponse {
 
         if let error = internalError {
             result = error
-        } else if let response = alamofireResponse {
-            if let error = response.result.error {
-                result = LCError(error: error)
-            } else {
-                result = ObjectProfiler.error(JSONValue: value)
-            }
+        } else if let value = value {
+            result = ObjectProfiler.error(JSONValue: value)
         }
 
         return result
