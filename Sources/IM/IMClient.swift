@@ -890,7 +890,11 @@ extension IMClient {
         guard let localStorage = self.localStorage else {
             throw LCError.clientLocalStorageNotFound
         }
-        localStorage.open(completion: completion)
+        localStorage.open { [weak self] (result) in
+            self?.eventQueue.async {
+                completion(result)
+            }
+        }
     }
     
     public enum StoredConversationOrder {
@@ -957,7 +961,11 @@ extension IMClient {
         guard let localStorage = self.localStorage else {
             throw LCError.clientLocalStorageNotFound
         }
-        localStorage.deleteConversationAndMessages(IDs: IDs, completion: completion)
+        localStorage.deleteConversationAndMessages(IDs: IDs) { [weak self] (result) in
+            self?.eventQueue.async {
+                completion(result)
+            }
+        }
     }
     
 }
@@ -1112,7 +1120,7 @@ extension IMClient {
             processNotification(self, conversationID)
         }
         
-        let queryIDs: Set<String> = tuple.2
+        let queryIDs: Set<String> = tuple.queryIDs
         if !queryIDs.isEmpty {
             self.getConversations(by: queryIDs) { (client, result) in
                 switch result {
@@ -1126,7 +1134,7 @@ extension IMClient {
             }
         }
         
-        let queryTempIDs: Set<String> = tuple.3
+        let queryTempIDs: Set<String> = tuple.queryTempIDs
         if !queryTempIDs.isEmpty {
             self.getTemporaryConversations(by: queryTempIDs) { (client, result) in
                 switch result {
@@ -1694,7 +1702,11 @@ extension IMClient {
                         }
                     }
                 case .failure(error: let error):
-                    groupFlags.append(false)
+                    if error.code == LCError.InternalErrorCode.conversationNotFound.rawValue {
+                        groupFlags.append(true)
+                    } else {
+                        groupFlags.append(false)
+                    }
                     Logger.shared.error(error)
                 }
             }
@@ -1778,7 +1790,11 @@ extension IMClient {
                         }
                     }
                 case .failure(error: let error):
-                    groupFlags.append(false)
+                    if error.code == LCError.InternalErrorCode.conversationNotFound.rawValue {
+                        groupFlags.append(true)
+                    } else {
+                        groupFlags.append(false)
+                    }
                     Logger.shared.error(error)
                 }
             }
@@ -2119,7 +2135,7 @@ public enum IMConversationEvent {
     
     case dataUpdated(updatingData: [String: Any]?, updatedData: [String: Any]?, byClientID: String?, at: Date?)
     
-    case lastMessageUpdated
+    case lastMessageUpdated(newMessage: Bool)
     
     case unreadMessageCountUpdated
     

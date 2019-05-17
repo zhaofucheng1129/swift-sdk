@@ -33,14 +33,13 @@ class FileUploader {
     init(file: LCFile, payload: LCFile.Payload) {
         self.file = file
         self.payload = payload
+        let sessionManager = SessionManager(configuration: .default)
+        sessionManager.startRequestsImmediately = false
+        self.sessionManager = sessionManager
     }
 
     /// Session manager for uploading file.
-    private lazy var sessionManager: SessionManager = {
-        let sessionManager = SessionManager(configuration: .default)
-        sessionManager.startRequestsImmediately = false
-        return sessionManager
-    }()
+    private let sessionManager: SessionManager
 
     /**
      File tokens.
@@ -95,7 +94,7 @@ class FileUploader {
     /**
      File attributes.
      */
-    private struct FileAttributes {
+    struct FileAttributes {
 
         /// File payload.
         let payload: LCFile.Payload
@@ -220,7 +219,7 @@ class FileUploader {
             }
         }
 
-        static private func getMIMEType(filename: String?) -> String? {
+        static func getMIMEType(filename: String?) -> String? {
             guard let filename = filename else {
                 return nil
             }
@@ -256,7 +255,7 @@ class FileUploader {
         parameters["name"] = attributes.name
         parameters["mime_type"] = attributes.mimeType
 
-        var metaData: [String: Any] = [:]
+        var metaData: [String: Any] = (file.metaData?.jsonValue as? [String: Any]) ?? [:]
 
         metaData["size"] = attributes.size
         metaData["mime_type"] = attributes.mimeType

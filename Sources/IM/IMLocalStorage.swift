@@ -919,6 +919,7 @@ class IMLocalStorage {
                     table.sentTimestamp,
                     table.messageID
                 ]
+                IMLocalStorage.verboseLogging(database: db, SQL: sql, values: values)
                 try db.executeUpdate(sql, values: values)
                 self.client?.serialQueue.async {
                     completion?(.success)
@@ -1051,12 +1052,13 @@ class IMLocalStorage {
             var sql: String = ""
             do {
                 let key = Table.Message.CodingKeys.self
+                let order = (direction ?? .newToOld)
                 sql =
                 """
                 select * from \(Table.message)
                 where \(key.conversationID.rawValue) = \"\(conversationID)\"
                 and \(self.messageWhereCondition(start: start, end: end, direction: direction))
-                order by \(key.sentTimestamp.rawValue) asc,\(key.messageID.rawValue) asc
+                order by \(key.sentTimestamp.rawValue) \(order.SQLOrder),\(key.messageID.rawValue) \(order.SQLOrder)
                 limit \(limit)
                 """
                 IMLocalStorage.verboseLogging(database: db, SQL: sql)
@@ -1118,7 +1120,11 @@ class IMLocalStorage {
                     let breakpoint = result.bool(forColumn: key.breakpoint.rawValue)
                     message.breakpoint = breakpoint
                     breakpointSet.insert(breakpoint)
-                    messages.append(message)
+                    if order == .newToOld {
+                        messages.insert(message, at: 0)
+                    } else {
+                        messages.append(message)
+                    }
                 }
                 result.close()
                 client.serialQueue.async {

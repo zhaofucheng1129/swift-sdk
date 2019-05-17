@@ -551,6 +551,9 @@ extension IMConversation {
         completion: @escaping (String?, LCError?) -> Void)
         throws
     {
+        guard let client = self.client else {
+            throw LCError(code: .inconsistency, reason: "client not found.")
+        }
         var pushDataString: String? = nil
         if let pushData: [String: Any] = pushData {
             let data: Data = try JSONSerialization.data(withJSONObject: pushData, options: [])
@@ -568,6 +571,9 @@ extension IMConversation {
         guard let file: LCFile = categorizedMessage.file else {
             try normallyCompletedClosure()
             return
+        }
+        guard file.application === client.application else {
+            throw LCError(code: .inconsistency, reason: "file's application is not equal to client's application.")
         }
         guard !file.hasObjectId else {
             try normallyCompletedClosure()
@@ -773,6 +779,13 @@ extension IMConversation {
                         newMessage.deliveredTimestamp = oldMessage.deliveredTimestamp
                         newMessage.readTimestamp = oldMessage.readTimestamp
                         self.safeUpdatingLastMessage(newMessage: newMessage, client: client)
+                        if let localStorage = client.localStorage {
+                            do {
+                                try localStorage.updateOrIgnore(message: newMessage)
+                            } catch {
+                                Logger.shared.error(error)
+                            }
+                        }
                         client.eventQueue.async {
                             completion(.success)
                         }
@@ -1654,7 +1667,8 @@ internal extension IMConversation {
                 client.localStorage?.insertOrReplace(conversationID: self.ID, lastMessage: newMessage)
             }
             if notifying {
-                messageEvent = .lastMessageUpdated
+                let isNewMessageReplacing: Bool = shouldIncreased
+                messageEvent = .lastMessageUpdated(newMessage: isNewMessageReplacing)
             }
             if shouldIncreased && newMessage.ioType == .in {
                 isUnreadMessageIncreased = true
